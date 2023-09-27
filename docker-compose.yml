@@ -9,7 +9,7 @@ services:
         image: feegow-pdf-generator-apache
         container_name: pdf-generator-apache
         ports:
-            - "8001:80"
+            - "8008:80"
         volumes:
             - .:/var/www/html
 
@@ -25,6 +25,6 @@ services:
             - XDEBUG_CLIENT_PORT=9003
             - XDEBUG_IDEKEY=PHPSTORM
         ports:
-            - "8002:80"
+            - "8009:80"
         volumes:
             - .:/var/www/html
