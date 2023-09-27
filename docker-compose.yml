@@ -1,0 +1,30 @@
+# docker-compose.yml
+version: '3'
+
+services:
+    pdf-generator-apache:
+        build:
+            context: .docker
+            dockerfile: Dockerfile-apache
+        image: feegow-pdf-generator-apache
+        container_name: pdf-generator-apache
+        ports:
+            - "8001:80"
+        volumes:
+            - .:/var/www/html
+
+    pdf-generator-ngix:
+        build:
+            context: .docker
+            dockerfile: Dockerfile-nginx
+        image: feegow-pdf-generator-nginx
+        container_name: pdf-generator-nginx
+        environment:
+            - XDEBUG_MODE=debug
+            - XDEBUG_CLIENT_HOST=host.docker.internal
+            - XDEBUG_CLIENT_PORT=9003
+            - XDEBUG_IDEKEY=PHPSTORM
+        ports:
+            - "8002:80"
+        volumes:
+            - .:/var/www/html

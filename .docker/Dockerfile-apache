@@ -1,0 +1,60 @@
+# .docker/Dockerfile-apache
+FROM php:8.2-apache-bullseye
+
+WORKDIR /var/www/html
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV TZ=America/Sao_Paulo
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Instalação de dependências e extensões do PHP
+RUN apt-get update && apt-get install -y \
+    gnupg \
+    curl \
+    ca-certificates \
+    zip \
+    unzip \
+    git \
+    supervisor \
+    sqlite3 \
+    libpng-dev \
+    libzip-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libxml2-dev \
+    libxrender1 \
+    default-mysql-client \
+    apache2 \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install pdo_mysql zip bcmath soap intl \
+    && pecl install redis xdebug \
+    && docker-php-ext-enable redis xdebug
+
+# Instalação do Composer
+RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+
+# wkhtmltopdf (mesmo que antes)
+# wkhtmltopdf
+ENV WKTHMLTOPDF_DISTRO_VERSION bullseye
+ENV WKTHMLTOPDF_VERSION 0.12.6.1-2
+ENV WKHTMLTOPDX_FILE wkhtmltox_${WKTHMLTOPDF_VERSION}.${WKTHMLTOPDF_DISTRO_VERSION}_amd64.deb
+COPY ./wkhtmltox/${WKHTMLTOPDX_FILE} /tmp/$WKHTMLTOPDX_FILE
+RUN apt-get update && apt-get install -y wget
+RUN apt-get update && apt-get install -y xfonts-base
+RUN apt-get update && apt-get install -y xfonts-75dpi
+RUN apt-get update && apt-get install -y libxrender1
+RUN apt-get update && apt-get install -y fontconfig
+RUN dpkg -i /tmp/$WKHTMLTOPDX_FILE && apt-get -f install -y
+
+# Copia os arquivos de configuração
+COPY ./apache/php.ini /usr/local/etc/php/conf.d/99-custom.ini
+COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Ativa os módulos do Apache
+RUN a2enmod rewrite proxy_fcgi
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
