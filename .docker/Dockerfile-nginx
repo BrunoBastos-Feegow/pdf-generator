@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y ca-certificates curl gnupg \
     && apt-get update \
     && apt-get install -y nodejs \
     && npm install puppeteer --global
+RUN apt-get update && apt-get install -y chromium
 
 # Instalação do Composer
 RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
