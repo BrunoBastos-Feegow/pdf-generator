@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class WkhtmltopdfController extends Controller
 {
     public function __invoke()
     {
