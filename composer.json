@@ -12,7 +12,8 @@
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "spatie/browsershot": "^3.58"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
