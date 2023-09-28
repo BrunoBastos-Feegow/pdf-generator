@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,40 +36,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <script type="text/javascript">
-        PNotify.defaultModules.set(PNotifyBootstrap4, {});
-        PNotify.defaultModules.set(PNotifyFontAwesome5, {});
-        PNotify.defaults.icon = false;
-        PNotify.defaults.closerHover = false;
-        PNotify.defaults.sticker = false;
-        PNotify.defaultStack.close(true);
-        PNotify.defaultStack.maxOpen = 3;
-        PNotify.defaultStack.maxStrategy = 'close';
-        PNotify.defaultStack.modal = false;
-    </script>
-    <!-- Clarity -->
-    <script type="text/javascript"> (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () {
-                (c[a].q = c[a].q || []).push(arguments)
-            };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "fuly0ts2lc"); </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <link rel="stylesheet" href="http://host.docker.internal:8000/modules/patientinterface/css/medical-report-1.css">
     <style>
         @media print {
@@ -126,12 +81,14 @@
             padding-right: 0px;
             padding-bottom: 0px;
         }
-        .divFooter .rodape{
+
+        .divFooter .rodape {
             text-align: left;
-            padding-top: 20px!important;
+            padding-top: 20px !important;
         }
-        .footer-info{
-            padding-top: 30px!important;
+
+        .footer-info {
+            padding-top: 30px !important;
         }
 
         thead.report-header th {
@@ -139,29 +96,34 @@
             padding-bottom: 10px;
         }
 
-        @media  screen and (max-width: 500px){
+        @media screen and (max-width: 500px) {
             .report-header-cell {
                 padding-left: 8px;
                 padding-right: 50px;
                 font-size: 11px;
             }
-            report-content{
+
+            report-content {
                 padding-left: 64px;
                 padding-right: 50px;
             }
+
             .report-content-cell {
                 padding-left: 1px;
                 padding-right: 50px;
             }
+
             .divFooter {
                 padding-left: 59px;
                 padding-right: 50px;
             }
+
             .divFooter .rodape {
                 text-align: center;
 
             }
-            page[size="A4"]{
+
+            page[size="A4"] {
                 width: 10cm;
             }
         }
@@ -195,15 +157,15 @@
 <body style="border:0; margin: 0;" onload="subst()">
 <table style="border-bottom: 1px solid black; width: 100%">
     <tr>
-        <td>
+        <td class="report-content-cell" style="padding: 15px 0">
             <div style="margin-bottom: 15px;">
-            <p>
+                <p>
                 <span style="font-family:arial,helvetica,sans-serif">
                     <strong>Paciente:</strong> Airton Baptista Borgueti<br/>
                     <strong>Idade: </strong>12<br/>
                     <strong>Nascimento:&nbsp;</strong>20/12/2010<br/>
                     <strong>Data:</strong> quarta-feira, 27 de setembro de 2023</span>
-            </p>
+                </p>
             </div>
 
             <p><span style="font-family:courier new,courier,monospace"><strong>Uso Oral</strong><br/>

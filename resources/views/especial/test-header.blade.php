@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +13,6 @@
 
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/normalize.min.css">
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/bootstrap.min.css">
-    <style> @page {size: initial} </style>
     <link rel="stylesheet"
           href="http://host.docker.internal:8000/modules/patientinterface/css/patient-interface.css?v=1695855534">
 
@@ -45,40 +33,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <script type="text/javascript">
-        PNotify.defaultModules.set(PNotifyBootstrap4, {});
-        PNotify.defaultModules.set(PNotifyFontAwesome5, {});
-        PNotify.defaults.icon = false;
-        PNotify.defaults.closerHover = false;
-        PNotify.defaults.sticker = false;
-        PNotify.defaultStack.close(true);
-        PNotify.defaultStack.maxOpen = 3;
-        PNotify.defaultStack.maxStrategy = 'close';
-        PNotify.defaultStack.modal = false;
-    </script>
-    <!-- Clarity -->
-    <script type="text/javascript"> (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () {
-                (c[a].q = c[a].q || []).push(arguments)
-            };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "fuly0ts2lc"); </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <link rel="stylesheet" href="http://host.docker.internal:8000/modules/patientinterface/css/medical-report-1.css">
     <style>
         @media print {
@@ -105,21 +59,23 @@
             }
         }
 
-        .contentControleEspecial {
-            display: flex;
-            flex-flow: row;
-        }
+        /*.contentControleEspecial {*/
+        /*    display: flex;*/
+        /*    flex-flow: row;*/
+        /*}*/
 
         .box {
             padding: 10px;
             width: 50%;
-            margin: 5px;
+            margin: 0;
             border: 2px solid #000;
+            border-collapse: collapse;
+            height: fit-content;
         }
 
         .boxSign {
-            width: 50%;
-            margin: 10px;
+            width: 49%;
+            margin: 2px;
             text-align: center
         }
 
@@ -205,46 +161,46 @@
     </script>
 </head>
 <body style="border:0; margin: 0;" onload="subst()">
-<table style="width: 100%; margin-bottom: 15px;">
-    <tr style="border-bottom: 1px solid black;">
-        <td style="text-align: center;">
-            <div class="header-info">
-                <div><img alt=""
-                          src="https://functions.feegow.com/load-image?licenseId=20102&folder=Arquivos&file=9191e975b3ed3889b74a5ceed4fc67f1.png&renderMode=redirect&cache-prevent=1689699406"
-                          style="height:200px; width:800px"/></div>
-            </div>
-            <div class="linha">
-                <div style="text-align: center">
-                    <h3 style="font-weight: 600">Receituário de controle especial - 1ª via</h3>
-                </div>
-
-                <div class="contentControleEspecial ">
-                    <div class="box">
-                        Indicação do emitente<br>
-                        TESTE FEEGOW<br>
-                        CRO:5551234-SP<br>
-                        , <br>
-
-                        &nbsp;
-                        <br>
-                        Telefone: &nbsp;
-                    </div>
-                    <div class="box ">
-                        <p class="centerVertical">1a. via para retenção da farmácia ou drogaria<br>
-                            2a. via para orientação ao paciente</p>
-                    </div>
-                </div>
-            </div>
+<table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="width: 50%;">&nbsp;</td><td style="width: 50%;">&nbsp;</td></tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <img alt=""
+                 src="https://functions.feegow.com/load-image?licenseId=20102&folder=Arquivos&file=9191e975b3ed3889b74a5ceed4fc67f1.png&renderMode=redirect&cache-prevent=1689699406"
+                 style="height:200px; width:800px"/>
         </td>
     </tr>
     <tr>
-        <td>
-            <div class="header-info">
-                <p><span style="font-family:arial,helvetica,sans-serif"><strong>Paciente:</strong> Airton Baptista Borgueti<br/>
+        <td colspan="2">
+            <div style="text-align: center">
+                <h3 style="font-weight: 600">Receituário de controle especial - 1ª via</h3>
+            </div>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%; border-collapse: collapse;">
+    <tr>
+        <td style="width: 50% !important; border: 1px solid;">
+            Indicação do emitente<br>
+            TESTE FEEGOW<br>
+            CRO:5551234-SP<br>
+            , <br>
+
+            &nbsp;
+            <br>
+            Telefone: &nbsp;
+        </td>
+        <td style="width: 50% !important; border: 1px solid; word-wrap: break-word;">
+            <p>1a. via para retenção da farmácia ou drogaria</p>
+            <p>2a. via para orientação ao paciente</p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p><span style="font-family:arial,helvetica,sans-serif"><strong>Paciente:</strong> Airton Baptista Borgueti<br/>
                 <strong>Idade: </strong>12<br/>
                 <strong>Nascimento:&nbsp;</strong>20/12/2010<br/>
                 <strong>Data:</strong> quarta-feira, 27 de setembro de 2023</span></p>
-            </div>
         </td>
     </tr>
 </table>

@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,9 +13,6 @@
 
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/normalize.min.css">
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/bootstrap.min.css">
-    <style> @page {
-            size: initial
-        } </style>
     <link rel="stylesheet"
           href="http://host.docker.internal:8000/modules/patientinterface/css/patient-interface.css?v=1695855534">
 
@@ -47,40 +33,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <script type="text/javascript">
-        PNotify.defaultModules.set(PNotifyBootstrap4, {});
-        PNotify.defaultModules.set(PNotifyFontAwesome5, {});
-        PNotify.defaults.icon = false;
-        PNotify.defaults.closerHover = false;
-        PNotify.defaults.sticker = false;
-        PNotify.defaultStack.close(true);
-        PNotify.defaultStack.maxOpen = 3;
-        PNotify.defaultStack.maxStrategy = 'close';
-        PNotify.defaultStack.modal = false;
-    </script>
-    <!-- Clarity -->
-    <script type="text/javascript"> (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () {
-                (c[a].q = c[a].q || []).push(arguments)
-            };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "fuly0ts2lc"); </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <link rel="stylesheet" href="http://host.docker.internal:8000/modules/patientinterface/css/medical-report-1.css">
     <style>
         @media print {
@@ -115,14 +67,16 @@
         .box {
             padding: 10px;
             width: 50%;
-            margin: 5px;
+            margin: 0;
             border: 2px solid #000;
+            border-collapse: collapse;
+            height: 100%;
         }
 
         .boxSign {
             width: 50%;
-            margin: 10px;
-            text-align: center
+            margin: 2px;
+            text-align: center;
         }
 
         .centerVertical {
@@ -207,65 +161,56 @@
     </script>
 </head>
 <body style="border:0; margin: 0;" onload="subst()">
-<table style="width: 100%; margin-bottom: 15px;">
-    <tr style="border-bottom: 1px solid black;">
-        <td style="text-align: center;">
-            <div class="divFooter">
-                <div class="divFooter-signature">
-                    <div class="contentControleEspecial ">
-                        <div class="boxSign">
+<table style="width: 100%; margin-bottom: 15px; border-collapse: collapse;">
+    <tr>
+        <td style="width: 50%;"></td>
+        <td style="width: 50%; text-align: center;">
+            <span id="dataV"
+                  style="display: block;">_______________, ____ de _________ de _______.</span>
 
-                        </div>
-                        <div class="boxSign">
-                            <span id="dataV" style="display: block;">_______________, ____ de ________________ de _______.</span>
-
-                            <div class="divFooter-signature">
-                                <img class="signature"
-                                     src="https://functions.feegow.com/load-image?licenseId=20102&folder=Imagens&file=b556374df26f3d3b5c4dd035e1ca9184.jpg&renderMode=redirect"/>
-                                <div>
-                                    ___________________________________<br>
-                                    Dra. Teste Feegow <br>
-                                    CRO 5551234 SP
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="contentControleEspecial ">
-                        <div class="box" style="text-align: left">
-                            Indicação do comprador<br>
-                            Nome:.......................................................................<br>
-                            ............................................................................
-                            RG:.......................................................
-                            Emissor:..........................................
-                            Endereço:...................................................................
-                            Cidade:................................................ UF:.................
-                            <br>Telefone: .............................
-
-                        </div>
-                        <div class="box">
-                            <p>Identificação do fornecedor</p>
-                            <p>&nbsp;</p>
-                            <table border="0" width="100%" class="data">
-                                <tr>
-                                    <td align="center" width="50%">
-                                        _______________________<br>
-                                        Assinatura farmacêutico
-                                    </td>
-                                    <td align="center" width="50%">
-                                        Data: ..../..../.......
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+            <div style="text-justify: distribute-all-lines;">
+                <img class="signature"
+                     src="https://functions.feegow.com/load-image?licenseId=20102&folder=Imagens&file=b556374df26f3d3b5c4dd035e1ca9184.jpg&renderMode=redirect"/>
+                <div>
+                    ___________________________________<br>
+                    Dra. Teste Feegow <br>
+                    CRO 5551234 SP
                 </div>
-
-
-                <div style="text-align:center"><strong>Nosso site:</strong> <u>www.lablinus.com.br</u>&nbsp; &nbsp;
-                    &nbsp; &nbsp; <strong>Instagram:</strong> @clinicalinuspauling
-                </div>
-
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; border: 1px solid;">Indicação do comprador</td>
+        <td style="text-align: center; border: 1px solid;">Identificação do fornecedor</td>
+    </tr>
+    <tr>
+        <td style="width: 50%; border: 1px solid;">
+            Nome:...........................................................
+            RG:..................................Emissor:...................
+            Endereço:.......................................................
+            Cidade:...................................... UF:...............
+            <br>Telefone: ..................................................
+        </td>
+        <td style="width: 50%; border: 1px solid;">
+                <p>&nbsp;</p>
+                <table style="border:0; width:100%;" class="data">
+                    <tr>
+                        <td align="center" width="50%">
+                            _______________________<br>
+                            Assinatura farmacêutico
+                        </td>
+                        <td align="center" width="50%">
+                            Data: ..../..../.......
+                        </td>
+                    </tr>
+                </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="width: 100%;">
+            <div style="display: block; text-align:center;"><strong>Nosso site:</strong> <u>www.lablinus.com.br</u>&nbsp;
+                &nbsp;
+                &nbsp; &nbsp; <strong>Instagram:</strong> @clinicalinuspauling
             </div>
         </td>
     </tr>

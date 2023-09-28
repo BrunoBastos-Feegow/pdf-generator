@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,9 +13,7 @@
 
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/normalize.min.css">
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/bootstrap.min.css">
-    <style> @page {
-            size: initial
-        } </style>
+    <style> @page {size: initial} </style>
     <link rel="stylesheet"
           href="http://host.docker.internal:8000/modules/patientinterface/css/patient-interface.css?v=1695848268">
 
@@ -47,40 +34,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <script type="text/javascript">
-        PNotify.defaultModules.set(PNotifyBootstrap4, {});
-        PNotify.defaultModules.set(PNotifyFontAwesome5, {});
-        PNotify.defaults.icon = false;
-        PNotify.defaults.closerHover = false;
-        PNotify.defaults.sticker = false;
-        PNotify.defaultStack.close(true);
-        PNotify.defaultStack.maxOpen = 3;
-        PNotify.defaultStack.maxStrategy = 'close';
-        PNotify.defaultStack.modal = false;
-    </script>
-    <!-- Clarity -->
-    <script type="text/javascript"> (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () {
-                (c[a].q = c[a].q || []).push(arguments)
-            };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "fuly0ts2lc"); </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <link rel="stylesheet" href="http://host.docker.internal:8000/modules/patientinterface/css/medical-report-1.css">
     <style>
         @media print {

@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());  gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,26 +30,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <script type="text/javascript">
-        PNotify.defaultModules.set(PNotifyBootstrap4, {});
-        PNotify.defaultModules.set(PNotifyFontAwesome5, {});
-        PNotify.defaults.icon = false;
-        PNotify.defaults.closerHover = false;
-        PNotify.defaults.sticker = false;
-        PNotify.defaultStack.close(true);
-        PNotify.defaultStack.maxOpen = 3;
-        PNotify.defaultStack.maxStrategy = 'close';
-        PNotify.defaultStack.modal = false;
-    </script>
-    <!-- Clarity -->
-    <script type="text/javascript"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, "clarity", "script", "fuly0ts2lc"); </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDZHGQVYK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());  gtag('config', 'G-9QDZHGQVYK');
-    </script>
     <link rel="stylesheet" href="http://host.docker.internal:8000/modules/patientinterface/css/medical-report-1.css">
     <style>
         @media print {
@@ -168,9 +142,8 @@
     </script>
 </head>
 <body style="border:0; margin: 0;" onload="subst()">
-<table style="border-bottom: 1px solid black; width: 100%">
+<table style="width: 100%">
     <tr>
-        <td class="section"></td>
         <td>
             <div class="divFooter">
                 <div class="divFooter-signature">
@@ -191,7 +164,6 @@
 
                 </div>
             </div>
-            Page <span class="page"></span> of <span class="topage"></span>
         </td>
     </tr>
 </table>
