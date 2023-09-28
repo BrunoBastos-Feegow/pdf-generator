@@ -11,9 +11,9 @@ class WkhtmltopdfController extends Controller
         $especial = request()->get('especial');
 
         if($especial) {
-            $header = view('especial.test-header')->render();
-            $footer = view('especial.test-footer')->render();
-            $body   = view('especial.test-body')->render();
+            $header = view('wkhtmltopdf.special-header')->render();
+            $footer = view('wkhtmltopdf.special-footer')->render();
+            $body   = view('wkhtmltopdf.special-body')->render();
             $snappy = app()->make('snappy.pdf');
             $snappy->setOption('header-html', $header);
             $snappy->setOption('footer-html', $footer);
@@ -22,9 +22,9 @@ class WkhtmltopdfController extends Controller
             $snappy->setOption('margin-left', 10);
             $snappy->setOption('margin-right', 10);
         } else {
-            $header = view('test-header')->render();
-            $footer = view('test-footer')->render();
-            $body   = view('test-body')->render();
+            $header = view('wkhtmltopdf.test-header')->render();
+            $footer = view('wkhtmltopdf.test-footer')->render();
+            $body   = view('wkhtmltopdf.test-body')->render();
             $snappy = app()->make('snappy.pdf');
             $snappy->setOption('header-html', $header);
             $snappy->setOption('footer-html', $footer);
