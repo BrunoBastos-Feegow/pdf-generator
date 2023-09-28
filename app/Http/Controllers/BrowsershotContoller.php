@@ -9,10 +9,18 @@ class BrowsershotContoller extends Controller
 {
     public function __invoke()
     {
+        $special = request()->get('special');
+
         try {
-            $header = view('browsershot.default-header')->render();
-            $footer = view('browsershot.default-footer')->render();
-            $body   = view('browsershot.default-body')->render();
+            if($special) {
+                $header = view('browsershot.special-header')->render();
+                $footer = view('browsershot.special-footer')->render();
+                $body   = view('browsershot.special-body')->render();
+            } else {
+                $header = view('browsershot.default-header')->render();
+                $footer = view('browsershot.default-footer')->render();
+                $body   = view('browsershot.default-body')->render();
+            }
 
             $pdf = Browsershot::html($body)
                 ->setChromePath('/usr/bin/chromium')
@@ -33,7 +41,8 @@ class BrowsershotContoller extends Controller
                 'Content-Disposition' => 'inline; filename="' . now() . '.pdf"',
                 'Cache-Control'       => 'no-cache, no-store, max-age=0, must-revalidate',
             ]);
-        } catch (\Throwable $th) {
+
+        } catch(\Throwable $th) {
             return response($th->getMessage(), 500);
         }
     }
