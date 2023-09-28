@@ -10,12 +10,14 @@ class BrowsershotContoller extends Controller
     public function __invoke()
     {
         try {
-            $header = view('test-header')->render();
-            $footer = view('test-footer')->render();
-            $body   = view('test-body')->render();
+            $header = view('browsershot.default-header')->render();
+            $footer = view('browsershot.default-footer')->render();
+            $body   = view('browsershot.default-body')->render();
 
             $pdf = Browsershot::html($body)
                 ->setChromePath('/usr/bin/chromium')
+                ->setOption('ignore-certificate-errors', true)
+                ->setOption('web-security', false)
                 ->showBrowserHeaderAndFooter()
                 ->headerHtml($header)
                 ->footerHtml($footer)
