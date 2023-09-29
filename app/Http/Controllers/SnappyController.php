@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class WkhtmltopdfController extends Controller
+class SnappyController extends Controller
 {
     public function __invoke()
     {
         $especial = request()->get('special');
 
         if($especial) {
-            $header = view('wkhtmltopdf.special-header')->render();
-            $footer = view('wkhtmltopdf.special-footer')->render();
-            $body   = view('wkhtmltopdf.special-body')->render();
+            $header = view('snappy.special-header')->render();
+            $footer = view('snappy.special-footer')->render();
+            $body   = view('snappy.special-body')->render();
             $snappy = app()->make('snappy.pdf');
             $snappy->setOption('header-html', $header);
             $snappy->setOption('footer-html', $footer);
@@ -22,9 +22,9 @@ class WkhtmltopdfController extends Controller
             $snappy->setOption('margin-left', 10);
             $snappy->setOption('margin-right', 10);
         } else {
-            $header = view('wkhtmltopdf.default-header')->render();
-            $footer = view('wkhtmltopdf.default-footer')->render();
-            $body   = view('wkhtmltopdf.default-body')->render();
+            $header = view('snappy.default-header')->render();
+            $footer = view('snappy.default-footer')->render();
+            $body   = view('snappy.default-body')->render();
             $snappy = app()->make('snappy.pdf');
             $snappy->setOption('header-html', $header);
             $snappy->setOption('footer-html', $footer);
