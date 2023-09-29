@@ -8,7 +8,9 @@ Just a MVP for a PDF generator :-)
 ### How to run
 - Clone this repository
 - Set the environment variables in the .env file
-- Run the command `docker-compose up -d`
+- Install composer dependencies by running `composer install`
+- Generate an app_key by running `php artisan key:generate`
+- Build the images and start the containers by tunning `docker-compose up -d --build`
 - Access the url `http://localhost:8008` (apache container) or `http://localhost:8008` (nginx container) in your browser
 
 ### Installed libraries so far
