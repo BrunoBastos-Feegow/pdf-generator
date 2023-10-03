@@ -8,36 +8,65 @@ class SnappyController extends Controller
 {
     public function __invoke()
     {
+
+        DEFINE('PIXELS_PER_MM', 3.5);
+        $configs      = session()->get('configs');
+        $topMargin    = ($configs['topMargin'] ?? 20) / PIXELS_PER_MM;
+        $bottomMargin = ($configs['bottomMargin'] ?? 20) / PIXELS_PER_MM;
+        $leftMargin   = ($configs['leftMargin'] ?? 20) / PIXELS_PER_MM;
+        $rightMargin  = ($configs['rightMargin'] ?? 20) / PIXELS_PER_MM;
+        $headerHeight = ($configs['headerHeight'] ?? 50) / PIXELS_PER_MM;
+        $footerHeight = ($configs['footerHeight'] ?? 50) / PIXELS_PER_MM;
+        $useHeader    = $configs['useHeader'] ?? false;
+        $useFooter    = $configs['useFooter'] ?? false;
+        $paperSize    = $configs['paperSize'] ?? 'A4';
+        $orientation  = $configs['orientation'] ?? 'portrait';
+        $customWidth  = ($configs['customWidth'] ?? 210) / PIXELS_PER_MM;
+        $customHeight = ($configs['customHeight'] ?? 297) / PIXELS_PER_MM;
+
+//        dd($configs);
+
         $especial = request()->get('special');
 
         if($especial) {
-            $header = view('snappy.special-header')->render();
-            $footer = view('snappy.special-footer')->render();
-            $body   = view('snappy.special-body')->render();
+            $header = view('snappy.special-header', compact('configs'))->render();
+            $footer = view('snappy.special-footer', compact('configs'))->render();
+            $body   = view('snappy.special-body', compact('configs'))->render();
             $snappy = app()->make('snappy.pdf');
-            $snappy->setOption('header-html', $header);
-            $snappy->setOption('footer-html', $footer);
-            $snappy->setOption('margin-top', 120);
-            $snappy->setOption('margin-bottom', 95);
-            $snappy->setOption('margin-left', 10);
-            $snappy->setOption('margin-right', 10);
+            if($useHeader)
+                $snappy->setOption('header-html', $header);
+            if($useFooter)
+                $snappy->setOption('footer-html', $footer);
+            $snappy->setOption('margin-top', $topMargin + $headerHeight);
+            $snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
+            $snappy->setOption('margin-left', $leftMargin);
+            $snappy->setOption('margin-right', $rightMargin);
         } else {
-            $header = view('snappy.default-header')->render();
-            $footer = view('snappy.default-footer')->render();
-            $body   = view('snappy.default-body')->render();
+            $header = view('snappy.default-header', compact('configs'))->render();
+            $footer = view('snappy.default-footer', compact('configs'))->render();
+            $body   = view('snappy.default-body', compact('configs'))->render();
             $snappy = app()->make('snappy.pdf');
-            $snappy->setOption('header-html', $header);
-            $snappy->setOption('footer-html', $footer);
-            $snappy->setOption('margin-top', 45);
-            $snappy->setOption('margin-bottom', 55);
-            $snappy->setOption('margin-left', 10);
-            $snappy->setOption('margin-right', 10);
+            if($useHeader)
+                $snappy->setOption('header-html', $header);
+            if($useFooter)
+                $snappy->setOption('footer-html', $footer);
+            $snappy->setOption('margin-top', $topMargin + $headerHeight);
+            $snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
+            $snappy->setOption('margin-left', $leftMargin);
+            $snappy->setOption('margin-right', $rightMargin);
         }
 
         $snappy->setOption('header-spacing', 3);
         $snappy->setOption('footer-spacing', 3);
-        $snappy->setOption('page-size', 'A4');
-        $snappy->setOption('orientation', 'portrait');
+
+        if($paperSize == 'custom') {
+            $snappy->setOption('page-width', $customWidth);
+            $snappy->setOption('page-height', $customHeight);
+        } else {
+            $snappy->setOption('page-size', $paperSize);
+        }
+
+        $snappy->setOption('orientation', $orientation);
         $snappy->setOption('encoding', 'UTF-8');
         $snappy->setOption('dpi', 300);
 
