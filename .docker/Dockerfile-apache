@@ -63,7 +63,7 @@ COPY ./apache/php.ini /usr/local/etc/php/conf.d/99-custom.ini
 COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Ativa os módulos do Apache
-RUN a2enmod rewrite proxy_fcgi
+RUN a2enmod rewrite proxy_fcgi headers
 
 EXPOSE 80
 
