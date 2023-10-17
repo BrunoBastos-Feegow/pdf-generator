@@ -1,7 +1,7 @@
-<!--resources/js/Pages/Letterhead.vue-->
 <template>
+    <!--resources/js/Pages/Letterhead.vue-->
     <div class="container page-config">
-        <div class="page" :style="pageStyle">
+        <div class="page" ref="page" :style="pageStyle">
             <div id="top-margin-line" class="margin horizontal"
                  :style="{top: `${topMargin}px`}"
                  style="display: flex; justify-content: center; align-items: center;"
@@ -77,7 +77,7 @@
                 <label for="paper-size" class="block text-sm font-medium text-gray-700">Tamanho do Papel</label>
                 <select v-model="paperSize"
                         class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        @change="updatePageSize">
+                    >
                     <option value="A4">A4</option>
                     <option value="Letter">Letter</option>
                     <option value="A3">A3</option>
@@ -341,7 +341,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #f6f7f9c2;
 }
 
 .page {
