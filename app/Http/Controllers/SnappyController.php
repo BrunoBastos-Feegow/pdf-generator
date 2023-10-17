@@ -8,8 +8,8 @@ class SnappyController extends Controller
 {
     public function __invoke()
     {
-
-        DEFINE('PIXELS_PER_MM', 3.5);
+        //define a conversion rate from mm to pixels
+        define('PIXELS_PER_MM', (96 / 25.4));
         $configs      = session()->get('configs');
         $topMargin    = ($configs['topMargin'] ?? 20) / PIXELS_PER_MM;
         $bottomMargin = ($configs['bottomMargin'] ?? 20) / PIXELS_PER_MM;
