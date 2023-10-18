@@ -6,18 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//salvar os dados do vuejs na session para testes rápidos
-Route::middleware('web')->post('/save-configs', function(Request $request) {
-    session()->remove('configs');
-    $request->session()->put('configs', $request->all());
-    return response()->json(['status' => 'success']);
-})->name('save-configs');
-
-
 Route::get('teste', \App\Http\Controllers\TesteController::class);
-Route::get('letterhead', \App\Http\Controllers\LetterheadController::class);
+
+Route::get('letterhead/{id?}', [\App\Http\Controllers\LetterheadController::class, 'index'])->name('letterhead');
+Route::post('letterhead', [\App\Http\Controllers\LetterheadController::class, 'save'])->name('letterhead.save');
+
 Route::get('snappy', \App\Http\Controllers\SnappyController::class);
+
 Route::get('browsershot', \App\Http\Controllers\BrowsershotContoller::class);
+
 Route::get('phpword', \App\Http\Controllers\PhpwordController::class);
 
 Route::get('/', function() {
