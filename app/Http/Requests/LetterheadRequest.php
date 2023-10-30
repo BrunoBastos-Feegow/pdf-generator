@@ -37,7 +37,7 @@ class LetterheadRequest extends FormRequest
             'font-size'        => 'nullable|numeric',
             'color'            => 'nullable|string',
             'line-height'      => 'nullable|numeric',
-            'UnidadeID'        => 'nullable|string',
+            'UnidadeID'        => 'nullable|numeric',
             'line-height-type' => 'nullable|string',
             'headerHeight'     => 'nullable|numeric',
             'footerHeight'     => 'nullable|numeric',
