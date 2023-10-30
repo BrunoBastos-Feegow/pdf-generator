@@ -1,5 +1,5 @@
+<!--resources/js/Pages/Letterhead.vue-->
 <template>
-    <!--resources/js/Pages/Letterhead.vue-->
     <div class="container page-config">
         <div class="page" ref="page" :style="pageStyle">
             <div id="top-margin-line" class="margin horizontal"
@@ -55,6 +55,16 @@
         </div>
 
         <div class="config-panel flex flex-col space-y-4 mr-6">
+            <div>
+                <label for="nome-modelo" class="block text-sm font-medium text-gray-700">Nome do Modelo</label>
+                <input v-model.lazy="letterhead.NomeModelo"
+                       type="text"
+                       id="nome-modelo"
+                       name="nome-modelo"
+                       autocomplete="nome-modelo"
+                       class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+
+            </div>
             <label class="flex items-center space-x-2 justify-between">
                 <span class="text-sm font-medium">Usar Cabeçalho</span>
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
@@ -115,7 +125,7 @@
         <div class="modal-content">
             <h2>Editar {{ editingSection }}</h2>
             <label>Texto:</label>
-            <Tiptap v-model="content"/>
+            <Tiptap v-model="tipTapContent"/>
             <div class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button type="button"
                         class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
@@ -136,7 +146,7 @@
 
 <script>
 import Tiptap from '../components/Tiptap.vue'
-import axios from 'axios';
+import useLetterhead from "@/composables/letterhead.js";
 
 export default {
     props: {
@@ -148,193 +158,54 @@ export default {
     components: {
         Tiptap
     },
-    data() {
+    setup(props) {
+        const {
+            letterhead,
+            pageStyle,
+            pageWidth,
+            pageHeight,
+            scaledFontSize,
+            startDrag,
+            openHeaderEditor,
+            openFooterEditor,
+            onImageChange,
+            saveEdits,
+            closeEditor,
+            showEditor,
+            editingSection,
+            editingText,
+            editingImage,
+            headerText,
+            footerText,
+            headerImage,
+            footerImage,
+            tipTapContent
+        } = useLetterhead(props.letterhead);
+
         return {
-            SCALE_FACTOR: 4,
-            ZOOM_FACTOR: 0.5,
-            dragging: null,
-            startY: 0,
-            startX: 0,
-            showEditor: false,
-            editingSection: '',
-            editingText: '',
-            editingImage: null,
-            content: '',
-
-            //usar para compor o Cabecalho e Rodape
-            headerText: '',
-            footerText: '',
-            headerImage: null,
-            footerImage: null,
-            preventSave: false,
-        };
-    },
-    watch: {
-        letterhead: {
-            handler() {
-                if (!this.preventSave) {
-                    this.saveConfigs();
-                }
-            },
-            deep: true
-        }
-    },
-    computed: {
-        pageStyle() {
-            const width = this.letterhead.orientation === 'portrait' ? this.pageWidth : this.pageHeight;
-            const height = this.letterhead.orientation === 'portrait' ? this.pageHeight : this.pageWidth;
-            return {
-                width: `${width * this.SCALE_FACTOR * this.ZOOM_FACTOR}px`,
-                height: `${height * this.SCALE_FACTOR * this.ZOOM_FACTOR}px`
-            };
-        },
-        pageWidth() {
-            switch (this.letterhead.paperSize) {
-                case 'A4':
-                    return 210;
-                case 'Letter':
-                    return 215.9;
-                case 'A3':
-                    return 297;
-                case 'A5':
-                    return 148;
-                case 'A6':
-                    return 105;
-                case 'custom':
-                    return this.letterhead.customWidth;
-                default:
-                    return 210;
-            }
-        },
-        pageHeight() {
-            switch (this.letterhead.paperSize) {
-                case 'A4':
-                    return 297;
-                case 'Letter':
-                    return 279.4;
-                case 'A3':
-                    return 420;
-                case 'A5':
-                    return 210;
-                case 'A6':
-                    return 148;
-                case 'custom':
-                    return this.letterhead.customHeight;
-                default:
-                    return 297;
-            }
-        },
-        scaledFontSize() {
-            const baseFontSize = 12;
-            return baseFontSize * this.ZOOM_FACTOR;
-        }
-    },
-    mounted() {
-        console.warn("letterhead", this.letterhead)
-    },
-    methods: {
-        startDrag(direction, event) {
-            this.preventSave = true;
-            this.dragging = direction;
-            if (direction === 'top' || direction === 'bottom' || direction === 'header' || direction === 'footer') {
-                this.startY = event.clientY;
-            } else {
-                this.startX = event.clientX;
-            }
-            window.addEventListener('mousemove', this.drag);
-            window.addEventListener('mouseup', this.stopDrag);
-        },
-        drag(event) {
-            const PAGE_HEIGHT = 877;
-            const PAGE_WIDTH = 620;
-            const MIN_MARGIN = 0;
-            const MIN_GAP = 100;
-            const MAX_HEADER_HEIGHT = PAGE_HEIGHT - this.letterhead.mTop - this.letterhead.mBottom - MIN_GAP;
-            const MAX_FOOTER_HEIGHT = PAGE_HEIGHT - this.letterhead.mTop - this.letterhead.mBottom - MIN_GAP;
-
-            if (this.dragging === 'top') {
-                const delta = event.clientY - this.startY;
-                this.letterhead.mTop = Math.min(PAGE_HEIGHT - this.letterhead.mBottom - MIN_GAP, Math.max(MIN_MARGIN, this.letterhead.mTop + delta));
-                this.startY = event.clientY
-            } else if (this.dragging === 'bottom') {
-                const delta = event.clientY - this.startY;
-                this.letterhead.mBottom = Math.min(PAGE_HEIGHT - this.letterhead.mTop - MIN_GAP, Math.max(MIN_MARGIN, this.letterhead.mBottom - delta));
-                this.startY = event.clientY;
-            } else if (this.dragging === 'left') {
-                const delta = event.clientX - this.startX;
-                this.letterhead.mLeft = Math.min(PAGE_WIDTH - this.letterhead.mRight - MIN_GAP, Math.max(MIN_MARGIN, this.letterhead.mLeft + delta));
-                this.startX = event.clientX;
-            } else if (this.dragging === 'right') {
-                const delta = event.clientX - this.startX;
-                this.letterhead.mRight = Math.min(PAGE_WIDTH - this.letterhead.mLeft - MIN_GAP, Math.max(MIN_MARGIN, this.letterhead.mRight - delta));
-                this.startX = event.clientX;
-            } else if (this.dragging === 'header') {
-                const delta = event.clientY - this.startY;
-                this.letterhead.headerHeight = Math.min(MAX_HEADER_HEIGHT, Math.max(MIN_MARGIN, this.letterhead.headerHeight + delta));
-                this.startY = event.clientY;
-            } else if (this.dragging === 'footer') {
-                const delta = event.clientY - this.startY;
-                this.letterhead.footerHeight = Math.min(MAX_FOOTER_HEIGHT, Math.max(MIN_MARGIN, this.letterhead.footerHeight - delta));
-                this.startY = event.clientY;
-            }
-        },
-        stopDrag() {
-            this.dragging = null;
-            window.removeEventListener('mousemove', this.drag);
-            window.removeEventListener('mouseup', this.stopDrag);
-            this.preventSave = false;
-            this.saveConfigs();
-        },
-        saveConfigs() {
-            axios.post(route('letterhead.save'), this.letterhead)
-                .then(response => {
-                    console.log('Configurações salvas com sucesso.');
-                })
-                .catch(error => {
-                    console.error('Erro ao salvar as configurações:', error);
-                });
-        },
-        openHeaderEditor() {
-            this.editingSection = 'Cabeçalho';
-            this.editingText = this.headerText;
-            this.editingImage = this.headerImage;
-            this.content = this.headerText;
-            this.showEditor = true;
-        },
-        openFooterEditor() {
-            this.editingSection = 'Rodapé';
-            this.editingText = this.footerText;
-            this.editingImage = this.footerImage;
-            this.content = this.footerText;
-            this.showEditor = true;
-        },
-        onImageChange(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                this.editingImage = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        },
-        saveEdits() {
-            if (this.editingSection === 'Cabeçalho') {
-                this.headerText = this.content;
-                this.headerImage = this.editingImage;
-            } else {
-                this.footerText = this.content;
-                this.footerImage = this.editingImage;
-
-            }
-            this.closeEditor();
-        },
-        closeEditor() {
-            this.showEditor = false;
-            this.editingText = '';
-            this.editingImage = null;
-            this.content = '';
+            letterhead,
+            pageStyle,
+            pageWidth,
+            pageHeight,
+            scaledFontSize,
+            startDrag,
+            openHeaderEditor,
+            openFooterEditor,
+            onImageChange,
+            saveEdits,
+            closeEditor,
+            showEditor,
+            editingSection,
+            editingText,
+            editingImage,
+            headerText,
+            footerText,
+            headerImage,
+            footerImage,
+            tipTapContent
         }
     }
-};
+}
 </script>
 
 <style scoped>
@@ -444,5 +315,3 @@ export default {
     border: 1px dashed #1b6200;
 }
 </style>
-
-
