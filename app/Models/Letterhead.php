@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\SysActiveScope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,28 +45,37 @@ class Letterhead extends Model
         static::addGlobalScope(new SysActiveScope);
     }
 
-    public function doctors()
+    protected function doctors(): Attribute
     {
-        if(strstr(mb_strtolower($this->Profissionais), '|all|') || !$this->Profissionais)
-            return Doctor::all();
+        return Attribute::make(
+            get: function() {
+                if(strstr(mb_strtolower($this->Profissionais), '|all|') || !$this->Profissionais)
+                    return Doctor::all();
 
-        $doctors = explode('|', $this->Profissionais);
-        $doctors = array_filter($doctors, function($doctor) {
-            return is_numeric($doctor);
-        });
-        return Doctor::whereIn('id', $doctors)->get();
+                $doctors = explode('|', $this->Profissionais);
+                $doctors = array_filter($doctors, function($doctor) {
+                    return is_numeric($doctor);
+                });
+                return Doctor::whereIn('id', $doctors)->get();
+            },
+        );
+
     }
 
-    public function unities()
+    protected function unities(): Attribute
     {
-        if(strstr(mb_strtolower($this->UnidadeID), '|all|') || !$this->UnidadeID)
-            return Unity::all();
+        return Attribute::make(
+            get: function() {
+                if(strstr(mb_strtolower($this->UnidadeID), '|all|') || !$this->UnidadeID)
+                    return Unity::all();
 
-        $unities = explode('|', $this->UnidadeID);
-        $unities = array_filter($unities, function($unity) {
-            return is_numeric($unity);
-        });
-        return Unity::whereIn('id', $unities)->get();
+                $unities = explode('|', $this->UnidadeID);
+                $unities = array_filter($unities, function($unity) {
+                    return is_numeric($unity);
+                });
+                return Unity::whereIn('id', $unities)->get();
+            },
+        );
     }
 
 }
