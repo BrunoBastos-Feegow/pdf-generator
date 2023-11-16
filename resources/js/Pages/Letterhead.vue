@@ -6,32 +6,32 @@
                  :style="{top: `${letterhead.mTop}px`}"
                  style="display: flex; justify-content: center; align-items: center;"
                  @mousedown="startDrag('top', $event)">
-                <span class="distance-label">{{ letterhead.mTop }} mm</span>
+                <span class="distance-label">{{ (letterhead.mTop/2).toFixed(0) }} mm</span>
             </div>
             <div id="bottom-margin-line" class="margin horizontal"
                  :style="{bottom: `${letterhead.mBottom}px`}"
                  style="display: flex; justify-content: center; align-items: center;"
                  @mousedown="startDrag('bottom', $event)">
-                <span class="distance-label">{{ letterhead.mBottom }} mm</span>
+                <span class="distance-label">{{ (letterhead.mBottom/2).toFixed(0) }} mm</span>
             </div>
             <div id="left-margin-line" class="margin vertical"
                  :style="{left: `${letterhead.mLeft}px`}"
                  style="display: flex; justify-content: center; align-items: center;"
                  @mousedown="startDrag('left', $event)">
-                <span class="distance-label">{{ letterhead.mLeft }} mm</span>
+                <span class="distance-label">{{ (letterhead.mLeft/2).toFixed(0) }} mm</span>
             </div>
             <div id="right-margin-line" class="margin vertical"
                  :style="{right: `${letterhead.mRight}px`}"
                  style="display: flex; justify-content: center; align-items: center;"
                  @mousedown="startDrag('right', $event)">
-                <span class="distance-label">{{ letterhead.mRight }} mm</span>
+                <span class="distance-label">{{ (letterhead.mRight/2).toFixed(0) }} mm</span>
             </div>
 
             <div v-if="letterhead.useHeader" id="header-height-line" class="element height"
                  :style="{top: `${letterhead.mTop + letterhead.headerHeight}px`, left: `${letterhead.mLeft}px`, right: `${letterhead.mRight}px`, width: `calc(100% - ${letterhead.mLeft}px - ${letterhead.mRight}px)`}"
                  style="display: flex; justify-content: center; align-items: center;"
                  @mousedown="startDrag('header', $event)">
-                <span class="distance-label">{{ letterhead.headerHeight }} mm</span>
+                <span class="distance-label">{{ (letterhead.headerHeight/2).toFixed(0) }} mm</span>
             </div>
             <div v-if="letterhead.useHeader" class="header-content border-2 border-dashed border-gray-300"
                  :style="{fontSize: `${scaledFontSize}px`, height: `${letterhead.headerHeight}px`, top: `${letterhead.mTop}px`, left: `${letterhead.mLeft}px`, right: `${letterhead.mRight}px`, width: `calc(100% - ${letterhead.mLeft}px - ${letterhead.mRight}px)`}">
@@ -44,7 +44,7 @@
                  :style="{bottom: `${letterhead.mBottom + letterhead.footerHeight}px`, left: `${letterhead.mLeft}px`, right: `${letterhead.mRight}px`, width: `calc(100% - ${letterhead.mLeft}px - ${letterhead.mRight}px)`}"
                  style="display: flex; justify-content: center; align-items: center;"
                  @mousedown="startDrag('footer', $event)">
-                <span class="distance-label">{{ letterhead.footerHeight }} mm</span>
+                <span class="distance-label">{{ (letterhead.footerHeight/2).toFixed(0) }} mm</span>
             </div>
             <div v-if="letterhead.useFooter" class="footer-content border-2 border-dashed border-gray-300"
                  :style="{fontSize: `${scaledFontSize}px`, height: `${letterhead.footerHeight}px`, bottom: `${letterhead.mBottom}px`, left: `${letterhead.mLeft}px`, right: `${letterhead.mRight}px`, width: `calc(100% - ${letterhead.mLeft}px - ${letterhead.mRight}px)`}">
