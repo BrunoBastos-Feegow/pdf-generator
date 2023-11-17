@@ -12,6 +12,7 @@ class Doctor extends Model
 
     protected static function boot(): void
     {
+        parent::boot();
         static::addGlobalScope(new SysActiveScope);
     }
 }
