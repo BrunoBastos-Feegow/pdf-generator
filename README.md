@@ -11,7 +11,7 @@ Just a MVP for a PDF generator :-)
 - Install composer dependencies by running `composer install`
 - Generate an app_key by running `php artisan key:generate`
 - Build the images and start the containers by tunning `docker-compose up -d --build`
-- Access the url `http://localhost:8008` (apache container) or `http://localhost:8008` (nginx container) in your browser
+- Access the url `http://localhost:8008` (apache container) or `http://localhost:8009` (nginx container) in your browser
 
 ### Installed libraries so far
 - [barryvdh/laravel-snappy](https://github.com/barryvdh/laravel-snappy) docker-only (or you can install the wkhtmltpdf in your machine) 
