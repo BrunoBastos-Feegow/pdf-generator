@@ -42,6 +42,7 @@ class Letterhead extends Model
 
     protected static function boot()
     {
+        parent::boot();
         static::addGlobalScope(new SysActiveScope);
     }
 
