@@ -15,7 +15,7 @@ class Prescription extends Model
         return $this->belongsTo(Patient::class, 'PacienteID', 'id');
     }
 
-    protected function printable(): Attribute
+    protected function impressos(): Attribute
     {
         $printable = Printable::first();
         return Attribute::make(
