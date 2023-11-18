@@ -1,3 +1,17 @@
+@php
+    $topMargin = ($configs['topMargin'] ?? 5);
+    $bottomMargin = ($configs['bottomMargin'] ?? 5);
+    $leftMargin = ($configs['leftMargin'] ?? 5);
+    $rightMargin = ($configs['rightMargin'] ?? 5);
+    $headerHeight = ($configs['headerHeight'] ?? 0);
+    $footerHeight = ($configs['footerHeight'] ?? 0);
+    $useHeader = $configs['useHeader'] ?? false;
+    $useFooter = $configs['useFooter'] ?? false;
+    $paperSize = $configs['paperSize'] ?? 'A4';
+    $orientation = $configs['orientation'] ?? 'portrait';
+    $customWidth = ($configs['customWidth'] ?? 210);
+    $customHeight = ($configs['customHeight'] ?? 297);
+@endphp
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +27,7 @@
 
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/normalize.min.css">
     <link rel="stylesheet" href="http://host.docker.internal:8000/css/bootstrap.min.css">
-    <style> @page {
-            size: initial
-        } </style>
+{{--    <style> @page {size: initial } </style>--}}
     <link rel="stylesheet"
           href="http://host.docker.internal:8000/modules/patientinterface/css/patient-interface.css?v=1695848268">
 
@@ -38,99 +50,76 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
     <link rel="stylesheet" href="http://host.docker.internal:8000/modules/patientinterface/css/medical-report-1.css">
     <style>
-        @media print {
-            img, tr {
-                page-break-inside: auto;
-            }
-
-            .no-print, .no-print * {
-                display: none !important;
-            }
-
-            body {
-                min-width: auto !important;
-            }
-
-            .footer-info {
-                padding-top: 30px !important;
-            }
-
-            .divFooter .rodape {
-                text-align: left;
-                padding-top: 20px !important;
-            }
-        }
-
         .hidden {
             display: none;
         }
 
-        .main, .report-content-cell {
-            padding-left: 0px;
-            padding-right: 0px;
-        }
+        /*.main, .report-content-cell {*/
+        /*    padding-left: 0px;*/
+        /*    padding-right: 0px;*/
+        /*}*/
 
-        .report-header-cell {
-            padding-top: 0px;
-            padding-left: 0px;
-            padding-right: 0px;
-        }
+        /*.report-header-cell {*/
+        /*    padding-top: 0px;*/
+        /*    padding-left: 0px;*/
+        /*    padding-right: 0px;*/
+        /*}*/
 
-        .divFooter {
-            padding-left: 0px;
-            padding-right: 0px;
-            padding-bottom: 0px;
-        }
+        /*.divFooter {*/
+        /*    padding-left: 0px;*/
+        /*    padding-right: 0px;*/
+        /*    padding-bottom: 0px;*/
+        /*}*/
 
-        .divFooter .rodape {
-            text-align: left;
-            padding-top: 20px !important;
-        }
+        /*.divFooter .rodape {*/
+        /*    text-align: left;*/
+        /*    padding-top: 20px !important;*/
+        /*}*/
 
-        .footer-info {
-            padding-top: 30px !important;
-        }
+        /*.footer-info {*/
+        /*    padding-top: 30px !important;*/
+        /*}*/
 
-        thead.report-header th {
-            font-weight: normal;
-            padding-bottom: 10px;
-        }
+        /*thead.report-header th {*/
+        /*    font-weight: normal;*/
+        /*    padding-bottom: 10px;*/
+        /*}*/
 
-        @media screen and (max-width: 500px) {
-            .report-header-cell {
-                padding-left: 8px;
-                padding-right: 50px;
-                font-size: 11px;
-            }
+        /*@media screen and (max-width: 500px) {*/
+        /*    .report-header-cell {*/
+        /*        padding-left: 8px;*/
+        /*        padding-right: 50px;*/
+        /*        font-size: 11px;*/
+        /*    }*/
 
-            report-content {
-                padding-left: 64px;
-                padding-right: 50px;
-            }
+        /*    report-content {*/
+        /*        padding-left: 64px;*/
+        /*        padding-right: 50px;*/
+        /*    }*/
 
-            .report-content-cell {
-                padding-left: 1px;
-                padding-right: 50px;
-            }
+        /*    .report-content-cell {*/
+        /*        padding-left: 1px;*/
+        /*        padding-right: 50px;*/
+        /*    }*/
 
-            .divFooter {
-                padding-left: 59px;
-                padding-right: 50px;
-            }
+        /*    .divFooter {*/
+        /*        padding-left: 59px;*/
+        /*        padding-right: 50px;*/
+        /*    }*/
 
-            .divFooter .rodape {
-                text-align: center;
+        /*    .divFooter .rodape {*/
+        /*        text-align: center;*/
 
-            }
+        /*    }*/
 
-            page[size="A4"] {
-                width: 10cm;
-            }
-        }
+        /*    page[size="A4"] {*/
+        /*        width: 10cm;*/
+        /*    }*/
+        /*}*/
 
-        .report-container page * {
-            font-size: 20px !important;
-        }
+        /*.report-container page * {*/
+        /*    font-size: 20px !important;*/
+        /*}*/
     </style>
     <script>
         function subst() {
@@ -154,7 +143,7 @@
         }
     </script>
 </head>
-<body style="border:0; margin: 0;" onload="subst()">
+<body style="margin: {{ $topMargin }}px {{ $rightMargin }}px {{ $bottomMargin }}px {{ $leftMargin }}px;" onload="subst()">
 <table style="border-bottom: 1px solid black; width: 100%">
     <tr>
         <td class="report-content-cell" style="padding: 15px 0">

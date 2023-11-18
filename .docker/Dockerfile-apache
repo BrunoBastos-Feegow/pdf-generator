@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     apache2 \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql zip bcmath soap intl \
+    && docker-php-ext-install pdo_mysql zip bcmath soap intl exif \
     && pecl install redis xdebug \
     && docker-php-ext-enable redis xdebug
 
@@ -50,7 +50,7 @@ RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/
 ENV WKTHMLTOPDF_DISTRO_VERSION bullseye
 ENV WKTHMLTOPDF_VERSION 0.12.6.1-2
 ENV WKHTMLTOPDX_FILE wkhtmltox_${WKTHMLTOPDF_VERSION}.${WKTHMLTOPDF_DISTRO_VERSION}_amd64.deb
-COPY ./wkhtmltox/${WKHTMLTOPDX_FILE} /tmp/$WKHTMLTOPDX_FILE
+COPY .docker/wkhtmltox/${WKHTMLTOPDX_FILE} /tmp/$WKHTMLTOPDX_FILE
 RUN apt-get update && apt-get install -y wget
 RUN apt-get update && apt-get install -y xfonts-base
 RUN apt-get update && apt-get install -y xfonts-75dpi
@@ -59,12 +59,21 @@ RUN apt-get update && apt-get install -y fontconfig
 RUN dpkg -i /tmp/$WKHTMLTOPDX_FILE && apt-get -f install -y
 
 # Copia os arquivos de configuração
-COPY ./apache/php.ini /usr/local/etc/php/conf.d/99-custom.ini
-COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY .docker/apache/php.ini /usr/local/etc/php/conf.d/99-custom.ini
+COPY .docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Ativa os módulos do Apache
-RUN a2enmod rewrite proxy_fcgi
+RUN a2enmod rewrite proxy_fcgi headers
 
 EXPOSE 80
+
+## DESCOMENTAR PARA DEPLOY EM PRODUÇÃO!!!
+COPY ./ /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+#RUN composer install --no-dev --optimize-autoloader --no-interaction
+#RUN npm install --production
+RUN composer install --optimize-autoloader --no-interaction
+RUN npm install
+RUN npm run build
 
 CMD ["apache2-foreground"]

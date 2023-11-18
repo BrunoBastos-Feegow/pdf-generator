@@ -1,14 +1,39 @@
-<?php
+<?php //routes/web.php
 
-use App\Http\Controllers\BrowsershotContoller;
-use App\Http\Controllers\PhpwordController;
-use App\Http\Controllers\SnappyController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+Route::get('teste', \App\Http\Controllers\TesteController::class);
+
+Route::get('letterhead/{id?}', [\App\Http\Controllers\LetterheadController::class, 'index'])->name('letterhead');
+Route::post('letterhead', [\App\Http\Controllers\LetterheadController::class, 'save'])->name('letterhead.save');
+
+Route::get('snappy', \App\Http\Controllers\SnappyController::class);
+
+Route::get('browsershot', \App\Http\Controllers\BrowsershotContoller::class);
+
+Route::get('phpword', \App\Http\Controllers\PhpwordController::class);
 
 Route::get('/', function() {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion'     => PHP_VERSION,
+    ]);
 });
 
-Route::get('snappy', SnappyController::class);
-Route::get('browsershot', BrowsershotContoller::class);
-Route::get('phpword', PhpwordController::class);
+Route::get('/dashboard', function() {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function() {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';
