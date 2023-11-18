@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql zip bcmath soap intl
+    && docker-php-ext-install pdo_mysql zip bcmath soap intl exif
 #    && pecl install redis xdebug \
 #    && docker-php-ext-enable redis xdebug
 
@@ -49,22 +49,31 @@ RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/
 ENV WKTHMLTOPDF_DISTRO_VERSION bullseye
 ENV WKTHMLTOPDF_VERSION 0.12.6.1-2
 ENV WKHTMLTOPDX_FILE wkhtmltox_${WKTHMLTOPDF_VERSION}.${WKTHMLTOPDF_DISTRO_VERSION}_amd64.deb
-COPY ./wkhtmltox/${WKHTMLTOPDX_FILE} /tmp/$WKHTMLTOPDX_FILE
+COPY .docker/wkhtmltox/${WKHTMLTOPDX_FILE} /tmp/$WKHTMLTOPDX_FILE
 RUN apt-get update && apt-get install -y wget xfonts-base xfonts-75dpi libxrender1 fontconfig \
     && dpkg -i /tmp/${WKHTMLTOPDX_FILE} \
     && apt-get -f install -y
 
 # Copia os arquivos de configuração
-COPY ./nginx/nginx-site.conf /etc/nginx/sites-available/default
-COPY ./nginx/supervisord-nginx.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ./nginx/zz-custom.conf /usr/local/etc/php-fpm.d/zz-custom.conf
-COPY ./nginx/custom-xdebug.ini /usr/local/etc/php/conf.d/custom-xdebug.ini
-COPY ./nginx/custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini
+COPY .docker/nginx/nginx-site.conf /etc/nginx/sites-available/default
+COPY .docker/nginx/supervisord-nginx.conf /etc/supervisor/conf.d/supervisord.conf
+COPY .docker/nginx/zz-custom.conf /usr/local/etc/php-fpm.d/zz-custom.conf
+COPY .docker/nginx/custom-xdebug.ini /usr/local/etc/php/conf.d/custom-xdebug.ini
+COPY .docker/nginx/custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini
 
 # Criar o diretório para o socket e definir as permissões adequadas
 RUN mkdir -p /var/run/php/ && chown www-data:www-data /var/run/php/
 
 EXPOSE 80
+
+### DESCOMENTAR PARA DEPLOY EM PRODUÇÃO!!!
+COPY ./ /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+#RUN composer install --no-dev --optimize-autoloader --no-interaction
+#RUN npm install --production
+RUN composer install --optimize-autoloader --no-interaction
+RUN npm install
+RUN npm run build
 
 #CMD ["nginx", "-g", "daemon off;"]
 CMD ["/usr/bin/supervisord"]
