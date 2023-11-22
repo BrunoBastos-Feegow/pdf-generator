@@ -27,6 +27,33 @@ class SnappyController extends Controller
         ]);
     }
 
+    public function advancedHtmlToPdf(Request $request)
+    {
+        $request->validate([
+            'letterhead' => 'required|array',
+            'body' => 'required',
+            'default' => 'required',
+            'specialControl' => 'required',
+        ], [
+            'letterhead.required' => 'O campo letterhead é obrigatório.',
+            'body.required' => 'O campo body é obrigatório.',
+            'default.required' => 'O campo default é obrigatório.',
+            'specialControl.required' => 'O campo specialControl é obrigatório.',
+        ]);
+
+        $pdf = $this->snappyService->advancedHtmlToPdf(
+            $request->letterhead,
+            $request->body,
+            $request->default,
+            $request->specialControl
+        );
+        return response($pdf, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . now() . '.pdf"',
+            'Cache-Control'       => 'no-cache, no-store, max-age=0, must-revalidate',
+        ]);
+    }
+
     public function testeFixedContent()
     {
         //define a conversion rate from mm to pixels
@@ -44,38 +71,26 @@ class SnappyController extends Controller
         $orientation  = $configs['orientation'] ?? 'portrait';
         $customWidth  = ($configs['customWidth'] ?? 210) / PIXELS_PER_MM;
         $customHeight = ($configs['customHeight'] ?? 297) / PIXELS_PER_MM;
-
 //        dd($configs);
-
         $especial = request()->get('special');
-
         if($especial) {
             $header = view('snappy.special-header', compact('configs'))->render();
             $footer = view('snappy.special-footer', compact('configs'))->render();
             $body   = view('snappy.special-body', compact('configs'))->render();
-            $snappy = app()->make('snappy.pdf');
-            if($useHeader)
-                $snappy->setOption('header-html', $header);
-            if($useFooter)
-                $snappy->setOption('footer-html', $footer);
-            $snappy->setOption('margin-top', $topMargin + $headerHeight);
-            $snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
-            $snappy->setOption('margin-left', $leftMargin);
-            $snappy->setOption('margin-right', $rightMargin);
         } else {
             $header = view('snappy.default-header', compact('configs'))->render();
             $footer = view('snappy.default-footer', compact('configs'))->render();
             $body   = view('snappy.default-body', compact('configs'))->render();
-            $snappy = app()->make('snappy.pdf');
-            if($useHeader)
-                $snappy->setOption('header-html', $header);
-            if($useFooter)
-                $snappy->setOption('footer-html', $footer);
-            $snappy->setOption('margin-top', $topMargin + $headerHeight);
-            $snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
-            $snappy->setOption('margin-left', $leftMargin);
-            $snappy->setOption('margin-right', $rightMargin);
         }
+        $snappy = app()->make('snappy.pdf');
+        if($useHeader)
+            $snappy->setOption('header-html', $header);
+        if($useFooter)
+            $snappy->setOption('footer-html', $footer);
+        $snappy->setOption('margin-top', $topMargin + $headerHeight);
+        $snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
+        $snappy->setOption('margin-left', $leftMargin);
+        $snappy->setOption('margin-right', $rightMargin);
 
         $snappy->setOption('header-spacing', 3);
         $snappy->setOption('footer-spacing', 3);
