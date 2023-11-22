@@ -19,19 +19,19 @@ services:
         volumes:
             - .:/var/www/html
 
-    pdf-generator-ngix:
-        build:
-            context: .
-            dockerfile: .docker/Dockerfile-nginx
-        image: feegow-pdf-generator-nginx
-        container_name: pdf-generator-nginx
-        environment:
-            - XDEBUG_MODE=debug
-            - XDEBUG_CLIENT_HOST=host.docker.internal
-            - XDEBUG_CLIENT_PORT=9003
-            - XDEBUG_IDEKEY=PHPSTORM
-        ports:
-            - "8009:80"
-        # comentar mapeamento de volume para produção
-        volumes:
-            - .:/var/www/html
+#    pdf-generator-ngix:
+#        build:
+#            context: .
+#            dockerfile: .docker/Dockerfile-nginx
+#        image: feegow-pdf-generator-nginx
+#        container_name: pdf-generator-nginx
+#        environment:
+#            - XDEBUG_MODE=debug
+#            - XDEBUG_CLIENT_HOST=host.docker.internal
+#            - XDEBUG_CLIENT_PORT=9003
+#            - XDEBUG_IDEKEY=PHPSTORM
+#        ports:
+#            - "8009:80"
+#        # comentar mapeamento de volume para produção
+#        volumes:
+#            - .:/var/www/html
