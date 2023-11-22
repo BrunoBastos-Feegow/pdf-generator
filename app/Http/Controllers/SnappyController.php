@@ -2,11 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SnappyService;
 use Illuminate\Http\Request;
 
 class SnappyController extends Controller
 {
-    public function __invoke()
+    public function __construct(
+        private SnappyService $snappyService
+    ) {}
+
+    public function basicHtmlToPdf(Request $request)
+    {
+        $request->validate([
+            'html' => 'required',
+        ], [
+            'html.required' => 'O campo html é obrigatório.',
+        ]);
+
+        $pdf = $this->snappyService->basicHtmlToPdf($request->html);
+        return response($pdf, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . now() . '.pdf"',
+            'Cache-Control'       => 'no-cache, no-store, max-age=0, must-revalidate',
+        ]);
+    }
+
+    public function testeFixedContent()
     {
         //define a conversion rate from mm to pixels
         define('PIXELS_PER_MM', (96 / 25.4));
