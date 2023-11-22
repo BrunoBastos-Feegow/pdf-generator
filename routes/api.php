@@ -12,5 +12,7 @@ Route::group([
 ], function() {
     Route::post('/html-to-pdf', [\App\Http\Controllers\SnappyController::class, 'basicHtmlToPdf'])
         ->name('html-to-pdf');
-});
 
+    Route::post('advanced-html-to-pdf', [\App\Http\Controllers\SnappyController::class, 'advancedHtmlToPdf'])
+        ->name('advanced-html-to-pdf');
+});
