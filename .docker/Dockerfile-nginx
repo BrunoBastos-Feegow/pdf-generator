@@ -28,9 +28,9 @@ RUN apt-get update && apt-get install -y \
     nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql zip bcmath soap intl exif
-#    && pecl install redis xdebug \
-#    && docker-php-ext-enable redis xdebug
+    && docker-php-ext-install pdo_mysql zip bcmath soap intl exif \
+    && pecl install redis xdebug \
+    && docker-php-ext-enable redis xdebug
 
 # Instalação do Node.js v20 e Puppeteer
 RUN apt-get update && apt-get install -y ca-certificates curl gnupg \
@@ -67,8 +67,7 @@ RUN mkdir -p /var/run/php/ && chown www-data:www-data /var/run/php/
 EXPOSE 80
 
 ### DESCOMENTAR PARA DEPLOY EM PRODUÇÃO!!!
-COPY ./ /var/www/html
-RUN chown -R www-data:www-data /var/www/html
+COPY --chown=www-data:www-data ./ /var/www/html
 #RUN composer install --no-dev --optimize-autoloader --no-interaction
 #RUN npm install --production
 RUN composer install --optimize-autoloader --no-interaction
