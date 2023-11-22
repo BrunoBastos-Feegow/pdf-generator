@@ -6,16 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('teste', \App\Http\Controllers\TesteController::class);
-
 Route::get('letterhead/{id?}', [\App\Http\Controllers\LetterheadController::class, 'index'])->name('letterhead');
 Route::post('letterhead', [\App\Http\Controllers\LetterheadController::class, 'save'])->name('letterhead.save');
 
-Route::get('snappy', \App\Http\Controllers\SnappyController::class);
+Route::get('snappy', [\App\Http\Controllers\SnappyController::class, 'testeFixedContent'])->name('snappy.teste');
 
 Route::get('browsershot', \App\Http\Controllers\BrowsershotContoller::class);
-
-Route::get('phpword', \App\Http\Controllers\PhpwordController::class);
 
 Route::get('/', function() {
     return Inertia::render('Welcome', [
