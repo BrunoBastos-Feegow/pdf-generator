@@ -1,18 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\SnappyController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function(Request $request) {
-    return $request->user();
-});
+Route::post('test-fixed-content', [SnappyController::class, 'testFixedContent'])->name('snappy.test-fixed-content');
 
-Route::group([
-    'middleware' => ['medicalRecords']
-], function() {
-    Route::post('/html-to-pdf', [\App\Http\Controllers\SnappyController::class, 'basicHtmlToPdf'])
-        ->name('html-to-pdf');
+Route::post('basic', [SnappyController::class, 'basic'])->name('snappy.basic');
+Route::post('advanced', [SnappyController::class, 'advanced'])->name('snappy.advanced');
 
-    Route::post('advanced-html-to-pdf', [\App\Http\Controllers\SnappyController::class, 'advancedHtmlToPdf'])
-        ->name('advanced-html-to-pdf');
-});
