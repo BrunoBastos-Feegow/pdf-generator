@@ -1,0 +1,128 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost:8008"
+        }
+    ],
+    "info": {
+        "name": "Feegow PDF Generator API",
+        "_postman_id": "73cd032f-8cea-4d12-be7e-fbdca60e82ec",
+        "description": "API for generating PDFs from HTML",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "PDF generation",
+            "description": "",
+            "item": [
+                {
+                    "name": "Basic PDF generation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/basic",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/basic"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"html\":\"<html><body><h1>Teste<\\\/h1><\\\/body><\\\/html>\"}"
+                        },
+                        "description": "Generate PDFs from HTML",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"Content-Type\": \"application\/pdf\",\n\"Content-Disposition\": \"inline; filename=\"2021-09-28 14:09:00.pdf\"\",\n\"Cache-Control\": \"no-cache, no-store, max-age=0, must-revalidate\"\n}",
+                            "name": "Success"
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n     \"message\": \"The given data was invalid.\",\n     \"errors\": {\n         \"html\": [\n             \"O campo html \u00e9 obrigat\u00f3rio.\"\n         ]\n     }\n }",
+                            "name": "Validation error"
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n     \"message\": \"Internal server error\"\n }",
+                            "name": "Internal server error"
+                        }
+                    ]
+                },
+                {
+                    "name": "Advanced PDF generation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/advanced",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/advanced"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"settings\":{\"useHeader\":true,\"useFooter\":true,\"paperSize\":\"A4\",\"orientation\":\"portrait\"},\"header\":\"<html><body><h1>Header<\\\/h1><\\\/body><\\\/html>\",\"body\":\"<html><body><h1>Body<\\\/h1><\\\/body><\\\/html>\",\"footer\":\"<html><body><h1>Footer<\\\/h1><\\\/body><\\\/html>\"}"
+                        },
+                        "description": "Generate PDFs from HTML with header and footer repeating them in every page",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"Content-Type\": \"application\/pdf\",\n\"Content-Disposition\": \"inline; filename=\"2021-09-28 14:09:00.pdf\"\",\n\"Cache-Control\": \"no-cache, no-store, max-age=0, must-revalidate\"\n}",
+                            "name": "Success"
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n     \"message\": \"The given data was invalid.\",\n     \"errors\": {\n         \"settings\": [\n             \"O campo settings \u00e9 obrigat\u00f3rio.\"\n         ],\n         \"header\": [\n             \"O campo header \u00e9 obrigat\u00f3rio.\"\n         ],\n         \"body\": [\n             \"O campo body \u00e9 obrigat\u00f3rio.\"\n         ],\n         \"footer\": [\n             \"O campo footer \u00e9 obrigat\u00f3rio.\"\n         ]\n    }\n}",
+                            "name": "Validation error"
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\n    \"message\": \"Internal server error\"\n}",
+                            "name": "Internal server error"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

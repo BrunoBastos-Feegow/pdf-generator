@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Feegow PDF Generator API</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../docs/css/theme-default.style.css" media="screen">
+    <link rel="stylesheet" href="../docs/css/theme-default.print.css" media="print">
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/obsidian.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jets/0.14.1/jets.min.js"></script>
+
+    <style id="language-style">
+        /* starts out as display none and is replaced with js later  */
+                    body .content .bash-example code { display: none; }
+                    body .content .javascript-example code { display: none; }
+            </style>
+
+    <script>
+        var tryItOutBaseUrl = "http://localhost:8008";
+        var useCsrf = Boolean();
+        var csrfUrl = "/sanctum/csrf-cookie";
+    </script>
+    <script src="../docs/js/tryitout-4.26.0.js"></script>
+
+    <script src="../docs/js/theme-default-4.26.0.js"></script>
+
+</head>
+
+<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
+
+<a href="#" id="nav-button">
+    <span>
+        MENU
+        <img src="../docs/images/navbar.png" alt="navbar-image"/>
+    </span>
+</a>
+<div class="tocify-wrapper">
+    
+            <div class="lang-selector">
+                                            <button type="button" class="lang-button" data-language-name="bash">bash</button>
+                                            <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                    </div>
+    
+    <div class="search">
+        <input type="text" class="search" id="input-search" placeholder="Search">
+    </div>
+
+    <div id="toc">
+                    <ul id="tocify-header-introduction" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="introduction">
+                    <a href="#introduction">Introduction</a>
+                </li>
+                            </ul>
+                    <ul id="tocify-header-authenticating-requests" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="authenticating-requests">
+                    <a href="#authenticating-requests">Authenticating requests</a>
+                </li>
+                            </ul>
+                    <ul id="tocify-header-pdf-generation" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="pdf-generation">
+                    <a href="#pdf-generation">PDF generation</a>
+                </li>
+                                    <ul id="tocify-subheader-pdf-generation" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="pdf-generation-POSTapi-basic">
+                                <a href="#pdf-generation-POSTapi-basic">Basic PDF generation</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="pdf-generation-POSTapi-advanced">
+                                <a href="#pdf-generation-POSTapi-advanced">Advanced PDF generation</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+            </div>
+
+    <ul class="toc-footer" id="toc-footer">
+                    <li style="padding-bottom: 5px;"><a href="../docs/collection.json">View Postman collection</a></li>
+                            <li style="padding-bottom: 5px;"><a href="../docs/openapi.yaml">View OpenAPI spec</a></li>
+                <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
+    </ul>
+
+    <ul class="toc-footer" id="last-updated">
+        <li>Last updated: November 29, 2023</li>
+    </ul>
+</div>
+
+<div class="page-wrapper">
+    <div class="dark-box"></div>
+    <div class="content">
+        <h1 id="introduction">Introduction</h1>
+<p>API for generating PDFs from HTML</p>
+<aside>
+    <strong>Base URL</strong>: <code>http://localhost:8008</code>
+</aside>
+<p>This documentation aims to provide all the information you need to work with our API.</p>
+<aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+
+        <h1 id="authenticating-requests">Authenticating requests</h1>
+<p>This API is not authenticated.</p>
+
+        <h1 id="pdf-generation">PDF generation</h1>
+
+    
+
+                                <h2 id="pdf-generation-POSTapi-basic">Basic PDF generation</h2>
+
+<p>
+</p>
+
+<p>Generate PDFs from HTML</p>
+
+<span id="example-requests-POSTapi-basic">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8008/api/basic" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"html\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Teste&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8008/api/basic"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "html": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Teste&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-basic">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+&quot;Content-Type&quot;: &quot;application/pdf&quot;,
+&quot;Content-Disposition&quot;: &quot;inline; filename=&quot;2021-09-28 14:09:00.pdf&quot;&quot;,
+&quot;Cache-Control&quot;: &quot;no-cache, no-store, max-age=0, must-revalidate&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;html&quot;: [
+            &quot;O campo html &eacute; obrigat&oacute;rio.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500, Internal server error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal server error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-basic" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-basic"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-basic"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-basic" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-basic">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-basic" data-method="POST"
+      data-path="api/basic"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-basic', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-basic"
+                    onclick="tryItOut('POSTapi-basic');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-basic"
+                    onclick="cancelTryOut('POSTapi-basic');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-basic"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/basic</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-basic"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-basic"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>html</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="html"                data-endpoint="POSTapi-basic"
+               value="<html><body><h1>Teste</h1></body></html>"
+               data-component="body">
+    <br>
+<p>The HTML to be converted to PDF. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Teste&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+        </div>
+        </form>
+
+                    <h2 id="pdf-generation-POSTapi-advanced">Advanced PDF generation</h2>
+
+<p>
+</p>
+
+<p>Generate PDFs from HTML with header and footer repeating them in every page</p>
+
+<span id="example-requests-POSTapi-advanced">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8008/api/advanced" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"settings\": {
+        \"useHeader\": true,
+        \"useFooter\": true,
+        \"paperSize\": \"A4\",
+        \"orientation\": \"portrait\"
+    },
+    \"header\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Header&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\",
+    \"body\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Body&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\",
+    \"footer\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Footer&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8008/api/advanced"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "settings": {
+        "useHeader": true,
+        "useFooter": true,
+        "paperSize": "A4",
+        "orientation": "portrait"
+    },
+    "header": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Header&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;",
+    "body": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Body&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;",
+    "footer": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Footer&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-advanced">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+&quot;Content-Type&quot;: &quot;application/pdf&quot;,
+&quot;Content-Disposition&quot;: &quot;inline; filename=&quot;2021-09-28 14:09:00.pdf&quot;&quot;,
+&quot;Cache-Control&quot;: &quot;no-cache, no-store, max-age=0, must-revalidate&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;settings&quot;: [
+            &quot;O campo settings &eacute; obrigat&oacute;rio.&quot;
+        ],
+        &quot;header&quot;: [
+            &quot;O campo header &eacute; obrigat&oacute;rio.&quot;
+        ],
+        &quot;body&quot;: [
+            &quot;O campo body &eacute; obrigat&oacute;rio.&quot;
+        ],
+        &quot;footer&quot;: [
+            &quot;O campo footer &eacute; obrigat&oacute;rio.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500, Internal server error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal server error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-advanced" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-advanced"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-advanced"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-advanced" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-advanced">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-advanced" data-method="POST"
+      data-path="api/advanced"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-advanced', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-advanced"
+                    onclick="tryItOut('POSTapi-advanced');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-advanced"
+                    onclick="cancelTryOut('POSTapi-advanced');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-advanced"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/advanced</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-advanced"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-advanced"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>settings</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+ &nbsp;
+<br>
+<p>The settings for the PDF generation.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>useHeader</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+                <label data-endpoint="POSTapi-advanced" style="display: none">
+            <input type="radio" name="settings.useHeader"
+                   value="true"
+                   data-endpoint="POSTapi-advanced"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-advanced" style="display: none">
+            <input type="radio" name="settings.useHeader"
+                   value="false"
+                   data-endpoint="POSTapi-advanced"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Whether to use header or not. Example: <code>true</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>useFooter</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+                <label data-endpoint="POSTapi-advanced" style="display: none">
+            <input type="radio" name="settings.useFooter"
+                   value="true"
+                   data-endpoint="POSTapi-advanced"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-advanced" style="display: none">
+            <input type="radio" name="settings.useFooter"
+                   value="false"
+                   data-endpoint="POSTapi-advanced"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Whether to use footer or not. Example: <code>true</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>paperSize</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="settings.paperSize"                data-endpoint="POSTapi-advanced"
+               value="A4"
+               data-component="body">
+    <br>
+<p>The paper size. Example: <code>A4</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>orientation</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="settings.orientation"                data-endpoint="POSTapi-advanced"
+               value="portrait"
+               data-component="body">
+    <br>
+<p>The orientation. Example: <code>portrait</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>header</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="header"                data-endpoint="POSTapi-advanced"
+               value="<html><body><h1>Header</h1></body></html>"
+               data-component="body">
+    <br>
+<p>The HTML for the header. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Header&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>body</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="body"                data-endpoint="POSTapi-advanced"
+               value="<html><body><h1>Body</h1></body></html>"
+               data-component="body">
+    <br>
+<p>The HTML for the body. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Body&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>footer</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="footer"                data-endpoint="POSTapi-advanced"
+               value="<html><body><h1>Footer</h1></body></html>"
+               data-component="body">
+    <br>
+<p>The HTML for the footer. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Footer&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+        </div>
+        </form>
+
+            
+
+        
+    </div>
+    <div class="dark-box">
+                    <div class="lang-selector">
+                                                        <button type="button" class="lang-button" data-language-name="bash">bash</button>
+                                                        <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                            </div>
+            </div>
+</div>
+</body>
+</html>

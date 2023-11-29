@@ -1,0 +1,205 @@
+openapi: 3.0.3
+info:
+  title: 'Feegow PDF Generator API'
+  description: 'API for generating PDFs from HTML'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8008'
+paths:
+  /api/basic:
+    post:
+      summary: 'Basic PDF generation'
+      operationId: basicPDFGeneration
+      description: 'Generate PDFs from HTML'
+      parameters: []
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n\"Content-Type\": \"application/pdf\",\n\"Content-Disposition\": \"inline; filename=\"2021-09-28 14:09:00.pdf\"\",\n\"Cache-Control\": \"no-cache, no-store, max-age=0, must-revalidate\"\n}"
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    html:
+                      - 'O campo html é obrigatório.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      html:
+                        type: array
+                        example:
+                          - 'O campo html é obrigatório.'
+                        items:
+                          type: string
+        500:
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Internal server error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Internal server error'
+      tags:
+        - 'PDF generation'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                html:
+                  type: string
+                  description: 'The HTML to be converted to PDF.'
+                  example: '<html><body><h1>Teste</h1></body></html>'
+              required:
+                - html
+      security: []
+  /api/advanced:
+    post:
+      summary: 'Advanced PDF generation'
+      operationId: advancedPDFGeneration
+      description: 'Generate PDFs from HTML with header and footer repeating them in every page'
+      parameters: []
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n\"Content-Type\": \"application/pdf\",\n\"Content-Disposition\": \"inline; filename=\"2021-09-28 14:09:00.pdf\"\",\n\"Cache-Control\": \"no-cache, no-store, max-age=0, must-revalidate\"\n}"
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    settings:
+                      - 'O campo settings é obrigatório.'
+                    header:
+                      - 'O campo header é obrigatório.'
+                    body:
+                      - 'O campo body é obrigatório.'
+                    footer:
+                      - 'O campo footer é obrigatório.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      settings:
+                        type: array
+                        example:
+                          - 'O campo settings é obrigatório.'
+                        items:
+                          type: string
+                      header:
+                        type: array
+                        example:
+                          - 'O campo header é obrigatório.'
+                        items:
+                          type: string
+                      body:
+                        type: array
+                        example:
+                          - 'O campo body é obrigatório.'
+                        items:
+                          type: string
+                      footer:
+                        type: array
+                        example:
+                          - 'O campo footer é obrigatório.'
+                        items:
+                          type: string
+        500:
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Internal server error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Internal server error'
+      tags:
+        - 'PDF generation'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+                  description: 'The settings for the PDF generation.'
+                  example:
+                    useHeader: true
+                    useFooter: true
+                    paperSize: A4
+                    orientation: portrait
+                  properties:
+                    useHeader:
+                      type: boolean
+                      description: 'Whether to use header or not.'
+                      example: true
+                    useFooter:
+                      type: boolean
+                      description: 'Whether to use footer or not.'
+                      example: true
+                    paperSize:
+                      type: string
+                      description: 'The paper size.'
+                      example: A4
+                    orientation:
+                      type: string
+                      description: 'The orientation.'
+                      example: portrait
+                header:
+                  type: string
+                  description: 'The HTML for the header.'
+                  example: '<html><body><h1>Header</h1></body></html>'
+                body:
+                  type: string
+                  description: 'The HTML for the body.'
+                  example: '<html><body><h1>Body</h1></body></html>'
+                footer:
+                  type: string
+                  description: 'The HTML for the footer.'
+                  example: '<html><body><h1>Footer</h1></body></html>'
+              required:
+                - settings
+                - header
+                - body
+                - footer
+      security: []
+tags:
+  -
+    name: 'PDF generation'
+    description: ''
