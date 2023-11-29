@@ -40,7 +40,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <link rel="stylesheet" href="{{config('app.feeegow_api_url')}}modules/patientinterface/css/medical-report-1.css">
+    <link rel="stylesheet" href="{{config('app.feeegow_api_url')}}modules/patientinterface/css/medical-report-2.css">
     <style> .hidden {
             display: none;
         }
