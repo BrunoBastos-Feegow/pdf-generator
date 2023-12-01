@@ -44,9 +44,9 @@ class HtmlService
      * @param $html
      * @return HtmlService
      */
-    public function cleanUp($html): HtmlService
+    public function cleanUp(): HtmlService
     {
-        $this->replaceLocalhost($html);
+        $this->replaceLocalhost($this->html);
         return $this;
     }
 
