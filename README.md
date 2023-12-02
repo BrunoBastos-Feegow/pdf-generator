@@ -77,3 +77,5 @@ Just a MVP for a PDF generator :-)
     }
   }
   ```
+![image](https://github.com/BrunoBastos-Feegow/pdf-generator/assets/104787592/9094d3f5-eeae-469d-87d1-5f528a78210f)
+
