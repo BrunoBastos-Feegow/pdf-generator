@@ -2,6 +2,11 @@
 
 Just a MVP for a PDF generator :-)
 
+### ToDos
+- [ ] implement missing configurations to Feegow's letterhead (useHeader, useFooter, headerHeight, footerHeight etc)
+- [ ] test and find the best pixel to mm conversion rate
+- [ ] implement pdf generation for more document types
+
 ### Dependencies
 
 - Docker
