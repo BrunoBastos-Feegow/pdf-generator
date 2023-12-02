@@ -74,8 +74,8 @@
                                                     <li class="tocify-item level-2" data-unique="pdf-generation-POSTapi-basic">
                                 <a href="#pdf-generation-POSTapi-basic">Basic PDF generation</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="pdf-generation-POSTapi-advanced">
-                                <a href="#pdf-generation-POSTapi-advanced">Advanced PDF generation</a>
+                                                                                <li class="tocify-item level-2" data-unique="pdf-generation-POSTapi-dynamic-report">
+                                <a href="#pdf-generation-POSTapi-dynamic-report">Dynamic PDF generation</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -88,7 +88,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: November 29, 2023</li>
+        <li>Last updated: December 2, 2023</li>
     </ul>
 </div>
 
@@ -274,39 +274,126 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="pdf-generation-POSTapi-advanced">Advanced PDF generation</h2>
+                    <h2 id="pdf-generation-POSTapi-dynamic-report">Dynamic PDF generation</h2>
 
 <p>
 </p>
 
-<p>Generate PDFs from HTML with header and footer repeating them in every page</p>
+<p>Generate PDFs from HTML</p>
 
-<span id="example-requests-POSTapi-advanced">
+<span id="example-requests-POSTapi-dynamic-report">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8008/api/advanced" \
+    "http://localhost:8008/api/dynamic-report" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"settings\": {
+    \"report\": \"patientinterface::render-medical-report\",
+    \"letterhead\": {
+        \"mTop\": 20,
+        \"mBottom\": 20,
+        \"mLeft\": 20,
+        \"mRight\": 20,
+        \"headerHeight\": 50,
+        \"footerHeight\": 50,
         \"useHeader\": true,
         \"useFooter\": true,
         \"paperSize\": \"A4\",
-        \"orientation\": \"portrait\"
+        \"orientation\": \"portrait\",
+        \"customWidth\": 210,
+        \"customHeight\": 297
     },
-    \"header\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Header&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\",
-    \"body\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Body&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\",
-    \"footer\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Footer&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\"
+    \"body\": \"&lt;html&gt;&lt;body&gt;&lt;h1&gt;Teste&lt;\\/h1&gt;&lt;\\/body&gt;&lt;\\/html&gt;\",
+    \"default\": \"&lt;html&gt;&lt;body&gt;&lt;div&gt;Teste de conteúdo default&lt;\\/div&gt;&lt;\\/body&gt;&lt;\\/html&gt;\",
+    \"pedidos\": [
+        {
+            \"NomeProcedimento\": \"Procedimento 1\",
+            \"Observacoes\": \"Observação 1\"
+        },
+        {
+            \"NomeProcedimento\": \"Procedimento 2\",
+            \"Observacoes\": \"Observação 2\"
+        }
+    ],
+    \"configOpcoes\": {
+        \"AssociarPorGrupos\": 1
+    },
+    \"specialControl\": {
+        \"termico\": 1,
+        \"NomeProfissional\": \"Teste\",
+        \"DocumentoProfissional\": \"Teste\",
+        \"EnderecoClinica\": \"Teste\",
+        \"CidadeClinica\": \"Teste\",
+        \"EstadoClinica\": \"Teste\",
+        \"Tel1Clinica\": \"Teste\",
+        \"dataV\": \"2021-09-28 14:09:00\"
+    },
+    \"protocols\": [
+        {
+            \"NomeProtocolo\": \"Protocolo 1\",
+            \"NomeProfissional\": \"Profissional 1\",
+            \"ciclo\": \"Ciclo 1\",
+            \"Periodicidade\": \"Periodicidade 1\"
+        },
+        {
+            \"NomeProtocolo\": \"Protocolo 2\",
+            \"NomeProfissional\": \"Profissional 2\",
+            \"ciclo\": \"Ciclo 2\",
+            \"Periodicidade\": \"Periodicidade 2\"
+        }
+    ],
+    \"dadosPaciente\": {
+        \"NomePaciente\": \"Teste\",
+        \"NomeSexo\": \"Masculino\",
+        \"sysDate\": \"2021-09-28 14:09:00\",
+        \"id\": 1,
+        \"Nascimento\": \"2021-09-28 14:09:00\",
+        \"Altura\": 1.8,
+        \"Peso\": 80,
+        \"IMC\": 24.69,
+        \"Endereco\": \"Rua Teste\",
+        \"Bairro\": \"Bairro Teste\",
+        \"Cidade\": \"Cidade Teste\",
+        \"Estado\": \"Estado Teste\",
+        \"NomePais\": \"País Teste\",
+        \"Cep\": \"00000-000\",
+        \"Tel1\": \"0000-0000\",
+        \"Tel2\": \"0000-0000\",
+        \"Cel1\": \"00000-0000\",
+        \"Cel2\": \"00000-0000\",
+        \"Email1\": \"exemple@mail.com\",
+        \"Email2\": \"example2@mail.com\",
+        \"Documento\": \"00000000000\",
+        \"CPF\": \"000.000.000-00\",
+        \"NomeEstadoCivil\": \"Estado Civil Teste\",
+        \"Naturalidade\": \"Naturalidade Teste\",
+        \"NomeGrauInstrucao\": \"Grau de Instrução Teste\",
+        \"Profissao\": \"Profissão Teste\",
+        \"NomeOrigem\": \"Origem Teste\",
+        \"convenio1\": \"Convênio Teste\",
+        \"plano1\": \"Plano Teste\",
+        \"Matricula1\": \"Matrícula Teste\",
+        \"Validade1\": \"2021-09-28 14:09:00\",
+        \"Titular1\": \"Titular Teste\"
+    },
+    \"timeline\": [
+        {
+            \"title\": \"Teste\",
+            \"nome_profissional\": \"Teste\",
+            \"date_time\": \"2021-09-28 14:09:00\",
+            \"content\": \"Teste\"
+        }
+    ]
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8008/api/advanced"
+    "http://localhost:8008/api/dynamic-report"
 );
 
 const headers = {
@@ -315,15 +402,102 @@ const headers = {
 };
 
 let body = {
-    "settings": {
+    "report": "patientinterface::render-medical-report",
+    "letterhead": {
+        "mTop": 20,
+        "mBottom": 20,
+        "mLeft": 20,
+        "mRight": 20,
+        "headerHeight": 50,
+        "footerHeight": 50,
         "useHeader": true,
         "useFooter": true,
         "paperSize": "A4",
-        "orientation": "portrait"
+        "orientation": "portrait",
+        "customWidth": 210,
+        "customHeight": 297
     },
-    "header": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Header&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;",
-    "body": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Body&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;",
-    "footer": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Footer&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;"
+    "body": "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Teste&lt;\/h1&gt;&lt;\/body&gt;&lt;\/html&gt;",
+    "default": "&lt;html&gt;&lt;body&gt;&lt;div&gt;Teste de conteúdo default&lt;\/div&gt;&lt;\/body&gt;&lt;\/html&gt;",
+    "pedidos": [
+        {
+            "NomeProcedimento": "Procedimento 1",
+            "Observacoes": "Observação 1"
+        },
+        {
+            "NomeProcedimento": "Procedimento 2",
+            "Observacoes": "Observação 2"
+        }
+    ],
+    "configOpcoes": {
+        "AssociarPorGrupos": 1
+    },
+    "specialControl": {
+        "termico": 1,
+        "NomeProfissional": "Teste",
+        "DocumentoProfissional": "Teste",
+        "EnderecoClinica": "Teste",
+        "CidadeClinica": "Teste",
+        "EstadoClinica": "Teste",
+        "Tel1Clinica": "Teste",
+        "dataV": "2021-09-28 14:09:00"
+    },
+    "protocols": [
+        {
+            "NomeProtocolo": "Protocolo 1",
+            "NomeProfissional": "Profissional 1",
+            "ciclo": "Ciclo 1",
+            "Periodicidade": "Periodicidade 1"
+        },
+        {
+            "NomeProtocolo": "Protocolo 2",
+            "NomeProfissional": "Profissional 2",
+            "ciclo": "Ciclo 2",
+            "Periodicidade": "Periodicidade 2"
+        }
+    ],
+    "dadosPaciente": {
+        "NomePaciente": "Teste",
+        "NomeSexo": "Masculino",
+        "sysDate": "2021-09-28 14:09:00",
+        "id": 1,
+        "Nascimento": "2021-09-28 14:09:00",
+        "Altura": 1.8,
+        "Peso": 80,
+        "IMC": 24.69,
+        "Endereco": "Rua Teste",
+        "Bairro": "Bairro Teste",
+        "Cidade": "Cidade Teste",
+        "Estado": "Estado Teste",
+        "NomePais": "País Teste",
+        "Cep": "00000-000",
+        "Tel1": "0000-0000",
+        "Tel2": "0000-0000",
+        "Cel1": "00000-0000",
+        "Cel2": "00000-0000",
+        "Email1": "exemple@mail.com",
+        "Email2": "example2@mail.com",
+        "Documento": "00000000000",
+        "CPF": "000.000.000-00",
+        "NomeEstadoCivil": "Estado Civil Teste",
+        "Naturalidade": "Naturalidade Teste",
+        "NomeGrauInstrucao": "Grau de Instrução Teste",
+        "Profissao": "Profissão Teste",
+        "NomeOrigem": "Origem Teste",
+        "convenio1": "Convênio Teste",
+        "plano1": "Plano Teste",
+        "Matricula1": "Matrícula Teste",
+        "Validade1": "2021-09-28 14:09:00",
+        "Titular1": "Titular Teste"
+    },
+    "timeline": [
+        {
+            "title": "Teste",
+            "nome_profissional": "Teste",
+            "date_time": "2021-09-28 14:09:00",
+            "content": "Teste"
+        }
+    ]
 };
 
 fetch(url, {
@@ -334,88 +508,45 @@ fetch(url, {
 
 </span>
 
-<span id="example-responses-POSTapi-advanced">
-            <blockquote>
-            <p>Example response (200, Success):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-&quot;Content-Type&quot;: &quot;application/pdf&quot;,
-&quot;Content-Disposition&quot;: &quot;inline; filename=&quot;2021-09-28 14:09:00.pdf&quot;&quot;,
-&quot;Cache-Control&quot;: &quot;no-cache, no-store, max-age=0, must-revalidate&quot;
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (422, Validation error):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The given data was invalid.&quot;,
-    &quot;errors&quot;: {
-        &quot;settings&quot;: [
-            &quot;O campo settings &eacute; obrigat&oacute;rio.&quot;
-        ],
-        &quot;header&quot;: [
-            &quot;O campo header &eacute; obrigat&oacute;rio.&quot;
-        ],
-        &quot;body&quot;: [
-            &quot;O campo body &eacute; obrigat&oacute;rio.&quot;
-        ],
-        &quot;footer&quot;: [
-            &quot;O campo footer &eacute; obrigat&oacute;rio.&quot;
-        ]
-    }
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (500, Internal server error):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Internal server error&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-POSTapi-advanced" hidden>
+<span id="example-responses-POSTapi-dynamic-report">
+</span>
+<span id="execution-results-POSTapi-dynamic-report" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-POSTapi-advanced"></span>:
+                id="execution-response-status-POSTapi-dynamic-report"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-POSTapi-advanced"
+    <pre class="json"><code id="execution-response-content-POSTapi-dynamic-report"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-POSTapi-advanced" hidden>
+<span id="execution-error-POSTapi-dynamic-report" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-POSTapi-advanced">
+    <pre><code id="execution-error-message-POSTapi-dynamic-report">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-POSTapi-advanced" data-method="POST"
-      data-path="api/advanced"
+<form id="form-POSTapi-dynamic-report" data-method="POST"
+      data-path="api/dynamic-report"
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('POSTapi-advanced', this);">
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-dynamic-report', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-POSTapi-advanced"
-                    onclick="tryItOut('POSTapi-advanced');">Try it out ⚡
+                    id="btn-tryout-POSTapi-dynamic-report"
+                    onclick="tryItOut('POSTapi-dynamic-report');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-POSTapi-advanced"
-                    onclick="cancelTryOut('POSTapi-advanced');" hidden>Cancel 🛑
+                    id="btn-canceltryout-POSTapi-dynamic-report"
+                    onclick="cancelTryOut('POSTapi-dynamic-report');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-POSTapi-advanced"
+                    id="btn-executetryout-POSTapi-dynamic-report"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -423,7 +554,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-black">POST</small>
-            <b><code>api/advanced</code></b>
+            <b><code>api/dynamic-report</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -431,7 +562,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="POSTapi-advanced"
+                              name="Content-Type"                data-endpoint="POSTapi-dynamic-report"
                value="application/json"
                data-component="header">
     <br>
@@ -442,7 +573,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="POSTapi-advanced"
+                              name="Accept"                data-endpoint="POSTapi-dynamic-report"
                value="application/json"
                data-component="header">
     <br>
@@ -450,112 +581,816 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                                 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>report</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="report"                data-endpoint="POSTapi-dynamic-report"
+               value="patientinterface::render-medical-report"
+               data-component="body">
+    <br>
+<p>The report (name of the view used within feegow-api) to be generated. Example: <code>patientinterface::render-medical-report</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
         <details>
             <summary style="padding-bottom: 10px;">
-                <b style="line-height: 2;"><code>settings</code></b>&nbsp;&nbsp;
+                <b style="line-height: 2;"><code>letterhead</code></b>&nbsp;&nbsp;
 <small>object</small>&nbsp;
  &nbsp;
 <br>
-<p>The settings for the PDF generation.</p>
+<p>The letterhead configs.</p>
             </summary>
                                                 <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>mTop</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.mTop"                data-endpoint="POSTapi-dynamic-report"
+               value="20"
+               data-component="body">
+    <br>
+<p>The top margin of the letterhead. Example: <code>20</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>mBottom</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.mBottom"                data-endpoint="POSTapi-dynamic-report"
+               value="20"
+               data-component="body">
+    <br>
+<p>The bottom margin of the letterhead. Example: <code>20</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>mLeft</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.mLeft"                data-endpoint="POSTapi-dynamic-report"
+               value="20"
+               data-component="body">
+    <br>
+<p>The left margin of the letterhead. Example: <code>20</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>mRight</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.mRight"                data-endpoint="POSTapi-dynamic-report"
+               value="20"
+               data-component="body">
+    <br>
+<p>The right margin of the letterhead. Example: <code>20</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>headerHeight</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.headerHeight"                data-endpoint="POSTapi-dynamic-report"
+               value="50"
+               data-component="body">
+    <br>
+<p>The header height of the letterhead. Example: <code>50</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>footerHeight</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.footerHeight"                data-endpoint="POSTapi-dynamic-report"
+               value="50"
+               data-component="body">
+    <br>
+<p>The footer height of the letterhead. Example: <code>50</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>useHeader</code></b>&nbsp;&nbsp;
 <small>boolean</small>&nbsp;
-<i>optional</i> &nbsp;
-                <label data-endpoint="POSTapi-advanced" style="display: none">
-            <input type="radio" name="settings.useHeader"
+ &nbsp;
+                <label data-endpoint="POSTapi-dynamic-report" style="display: none">
+            <input type="radio" name="letterhead.useHeader"
                    value="true"
-                   data-endpoint="POSTapi-advanced"
+                   data-endpoint="POSTapi-dynamic-report"
                    data-component="body"             >
             <code>true</code>
         </label>
-        <label data-endpoint="POSTapi-advanced" style="display: none">
-            <input type="radio" name="settings.useHeader"
+        <label data-endpoint="POSTapi-dynamic-report" style="display: none">
+            <input type="radio" name="letterhead.useHeader"
                    value="false"
-                   data-endpoint="POSTapi-advanced"
+                   data-endpoint="POSTapi-dynamic-report"
                    data-component="body"             >
             <code>false</code>
         </label>
     <br>
-<p>Whether to use header or not. Example: <code>true</code></p>
+<p>The use header of the letterhead. Example: <code>true</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>useFooter</code></b>&nbsp;&nbsp;
 <small>boolean</small>&nbsp;
-<i>optional</i> &nbsp;
-                <label data-endpoint="POSTapi-advanced" style="display: none">
-            <input type="radio" name="settings.useFooter"
+ &nbsp;
+                <label data-endpoint="POSTapi-dynamic-report" style="display: none">
+            <input type="radio" name="letterhead.useFooter"
                    value="true"
-                   data-endpoint="POSTapi-advanced"
+                   data-endpoint="POSTapi-dynamic-report"
                    data-component="body"             >
             <code>true</code>
         </label>
-        <label data-endpoint="POSTapi-advanced" style="display: none">
-            <input type="radio" name="settings.useFooter"
+        <label data-endpoint="POSTapi-dynamic-report" style="display: none">
+            <input type="radio" name="letterhead.useFooter"
                    value="false"
-                   data-endpoint="POSTapi-advanced"
+                   data-endpoint="POSTapi-dynamic-report"
                    data-component="body"             >
             <code>false</code>
         </label>
     <br>
-<p>Whether to use footer or not. Example: <code>true</code></p>
+<p>The use footer of the letterhead. Example: <code>true</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>paperSize</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
-<i>optional</i> &nbsp;
+ &nbsp;
                 <input type="text" style="display: none"
-                              name="settings.paperSize"                data-endpoint="POSTapi-advanced"
+                              name="letterhead.paperSize"                data-endpoint="POSTapi-dynamic-report"
                value="A4"
                data-component="body">
     <br>
-<p>The paper size. Example: <code>A4</code></p>
+<p>The paper size of the letterhead. Example: <code>A4</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>orientation</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
-<i>optional</i> &nbsp;
+ &nbsp;
                 <input type="text" style="display: none"
-                              name="settings.orientation"                data-endpoint="POSTapi-advanced"
+                              name="letterhead.orientation"                data-endpoint="POSTapi-dynamic-report"
                value="portrait"
                data-component="body">
     <br>
-<p>The orientation. Example: <code>portrait</code></p>
+<p>The orientation of the letterhead. Example: <code>portrait</code></p>
                     </div>
-                                    </details>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>header</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>customWidth</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="header"                data-endpoint="POSTapi-advanced"
-               value="<html><body><h1>Header</h1></body></html>"
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.customWidth"                data-endpoint="POSTapi-dynamic-report"
+               value="210"
                data-component="body">
     <br>
-<p>The HTML for the header. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Header&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+<p>The custom width of the letterhead. Example: <code>210</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>customHeight</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="letterhead.customHeight"                data-endpoint="POSTapi-dynamic-report"
+               value="297"
+               data-component="body">
+    <br>
+<p>The custom height of the letterhead. Example: <code>297</code></p>
+                    </div>
+                                    </details>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>body</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="body"                data-endpoint="POSTapi-advanced"
-               value="<html><body><h1>Body</h1></body></html>"
+                              name="body"                data-endpoint="POSTapi-dynamic-report"
+               value="<html><body><h1>Teste</h1></body></html>"
                data-component="body">
     <br>
-<p>The HTML for the body. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Body&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+<p>The body of the report. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Teste&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>footer</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>default</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="footer"                data-endpoint="POSTapi-advanced"
-               value="<html><body><h1>Footer</h1></body></html>"
+                              name="default"                data-endpoint="POSTapi-dynamic-report"
+               value="<html><body><div>Teste de conteúdo default</div></body></html>"
                data-component="body">
     <br>
-<p>The HTML for the footer. Example: <code>&lt;html&gt;&lt;body&gt;&lt;h1&gt;Footer&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+<p>The default configs of the report. Example: <code>&lt;html&gt;&lt;body&gt;&lt;div&gt;Teste de conteúdo default&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>pedidos</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+ &nbsp;
+<br>
+<p>The pedidos of the report.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeProcedimento</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="pedidos.NomeProcedimento"                data-endpoint="POSTapi-dynamic-report"
+               value="Procedimento 1"
+               data-component="body">
+    <br>
+<p>The NomeProcedimento of the pedido. Example: <code>Procedimento 1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Observacoes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="pedidos.Observacoes"                data-endpoint="POSTapi-dynamic-report"
+               value="Observação 1"
+               data-component="body">
+    <br>
+<p>The Observacoes of the pedido. Example: <code>Observação 1</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>configOpcoes</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+ &nbsp;
+<br>
+<p>The configOpcoes of the report.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>AssociarPorGrupos</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="configOpcoes.AssociarPorGrupos"                data-endpoint="POSTapi-dynamic-report"
+               value="1"
+               data-component="body">
+    <br>
+<p>The AssociarPorGrupos of the configOpcoes. Example: <code>1</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>specialControl</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+ &nbsp;
+<br>
+<p>The specialControl of the report.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>termico</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="specialControl.termico"                data-endpoint="POSTapi-dynamic-report"
+               value="1"
+               data-component="body">
+    <br>
+<p>Tells whether the report is thermal or not. Example: <code>1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeProfissional</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.NomeProfissional"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The NomeProfissional of the specialControl. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>DocumentoProfissional</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.DocumentoProfissional"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The DocumentoProfissional of the specialControl. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>EnderecoClinica</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.EnderecoClinica"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The EnderecoClinica of the specialControl. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>CidadeClinica</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.CidadeClinica"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The CidadeClinica of the specialControl. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>EstadoClinica</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.EstadoClinica"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The EstadoClinica of the specialControl. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Tel1Clinica</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.Tel1Clinica"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The Tel1Clinica of the specialControl. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>dataV</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="specialControl.dataV"                data-endpoint="POSTapi-dynamic-report"
+               value="2021-09-28 14:09:00"
+               data-component="body">
+    <br>
+<p>The dataV of the specialControl. Example: <code>2021-09-28 14:09:00</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>protocols</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+ &nbsp;
+<br>
+<p>The protocols of the report.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeProtocolo</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="protocols.NomeProtocolo"                data-endpoint="POSTapi-dynamic-report"
+               value="Protocolo 1"
+               data-component="body">
+    <br>
+<p>The NomeProtocolo of the protocol. Example: <code>Protocolo 1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeProfissional</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="protocols.NomeProfissional"                data-endpoint="POSTapi-dynamic-report"
+               value="Profissional 1"
+               data-component="body">
+    <br>
+<p>The NomeProfissional of the protocol. Example: <code>Profissional 1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>ciclo</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="protocols.ciclo"                data-endpoint="POSTapi-dynamic-report"
+               value="Ciclo 1"
+               data-component="body">
+    <br>
+<p>The ciclo of the protocol. Example: <code>Ciclo 1</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>dadosPaciente</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+ &nbsp;
+<br>
+<p>The dadosPaciente of the report.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomePaciente</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.NomePaciente"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The NomePaciente of the dadosPaciente. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeSexo</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.NomeSexo"                data-endpoint="POSTapi-dynamic-report"
+               value="Masculino"
+               data-component="body">
+    <br>
+<p>The NomeSexo of the dadosPaciente. Example: <code>Masculino</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>sysDate</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.sysDate"                data-endpoint="POSTapi-dynamic-report"
+               value="2021-09-28 14:09:00"
+               data-component="body">
+    <br>
+<p>The sysDate of the dadosPaciente. Example: <code>2021-09-28 14:09:00</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="dadosPaciente.id"                data-endpoint="POSTapi-dynamic-report"
+               value="1"
+               data-component="body">
+    <br>
+<p>The id of the dadosPaciente. Example: <code>1</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Nascimento</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Nascimento"                data-endpoint="POSTapi-dynamic-report"
+               value="2021-09-28 14:09:00"
+               data-component="body">
+    <br>
+<p>The Nascimento of the dadosPaciente. Example: <code>2021-09-28 14:09:00</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Altura</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="dadosPaciente.Altura"                data-endpoint="POSTapi-dynamic-report"
+               value="1.8"
+               data-component="body">
+    <br>
+<p>The Altura of the dadosPaciente. Example: <code>1.8</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Peso</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="dadosPaciente.Peso"                data-endpoint="POSTapi-dynamic-report"
+               value="80"
+               data-component="body">
+    <br>
+<p>The Peso of the dadosPaciente. Example: <code>80</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>IMC</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="dadosPaciente.IMC"                data-endpoint="POSTapi-dynamic-report"
+               value="24.69"
+               data-component="body">
+    <br>
+<p>The IMC of the dadosPaciente. Example: <code>24.69</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Endereco</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Endereco"                data-endpoint="POSTapi-dynamic-report"
+               value="Rua Teste"
+               data-component="body">
+    <br>
+<p>The Endereco of the dadosPaciente. Example: <code>Rua Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Bairro</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Bairro"                data-endpoint="POSTapi-dynamic-report"
+               value="Bairro Teste"
+               data-component="body">
+    <br>
+<p>The Bairro of the dadosPaciente. Example: <code>Bairro Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Cidade</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Cidade"                data-endpoint="POSTapi-dynamic-report"
+               value="Cidade Teste"
+               data-component="body">
+    <br>
+<p>The Cidade of the dadosPaciente. Example: <code>Cidade Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Estado</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Estado"                data-endpoint="POSTapi-dynamic-report"
+               value="Estado Teste"
+               data-component="body">
+    <br>
+<p>The Estado of the dadosPaciente. Example: <code>Estado Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomePais</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.NomePais"                data-endpoint="POSTapi-dynamic-report"
+               value="País Teste"
+               data-component="body">
+    <br>
+<p>The NomePais of the dadosPaciente. Example: <code>País Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Cep</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Cep"                data-endpoint="POSTapi-dynamic-report"
+               value="00000-000"
+               data-component="body">
+    <br>
+<p>The Cep of the dadosPaciente. Example: <code>00000-000</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Tel1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Tel1"                data-endpoint="POSTapi-dynamic-report"
+               value="0000-0000"
+               data-component="body">
+    <br>
+<p>The Tel1 of the dadosPaciente. Example: <code>0000-0000</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Tel2</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Tel2"                data-endpoint="POSTapi-dynamic-report"
+               value="0000-0000"
+               data-component="body">
+    <br>
+<p>The Tel2 of the dadosPaciente. Example: <code>0000-0000</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Cel1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Cel1"                data-endpoint="POSTapi-dynamic-report"
+               value="00000-0000"
+               data-component="body">
+    <br>
+<p>The Cel1 of the dadosPaciente. Example: <code>00000-0000</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Cel2</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Cel2"                data-endpoint="POSTapi-dynamic-report"
+               value="00000-0000"
+               data-component="body">
+    <br>
+<p>The Cel2 of the dadosPaciente. Example: <code>00000-0000</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Email1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Email1"                data-endpoint="POSTapi-dynamic-report"
+               value="deleniti"
+               data-component="body">
+    <br>
+<p>The Email1 of the dadosPaciente. Example: Example: <code>deleniti</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Email2</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Email2"                data-endpoint="POSTapi-dynamic-report"
+               value="voluptatem"
+               data-component="body">
+    <br>
+<p>The Email2 of the dadosPaciente. Example: Example: <code>voluptatem</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Documento</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Documento"                data-endpoint="POSTapi-dynamic-report"
+               value="00000000000"
+               data-component="body">
+    <br>
+<p>The Documento of the dadosPaciente. Example: <code>00000000000</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>CPF</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.CPF"                data-endpoint="POSTapi-dynamic-report"
+               value="000.000.000-00"
+               data-component="body">
+    <br>
+<p>The CPF of the dadosPaciente. Example: <code>000.000.000-00</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeEstadoCivil</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.NomeEstadoCivil"                data-endpoint="POSTapi-dynamic-report"
+               value="Estado Civil Teste"
+               data-component="body">
+    <br>
+<p>The NomeEstadoCivil of the dadosPaciente. Example: <code>Estado Civil Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Naturalidade</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Naturalidade"                data-endpoint="POSTapi-dynamic-report"
+               value="Naturalidade Teste"
+               data-component="body">
+    <br>
+<p>The Naturalidade of the dadosPaciente. Example: <code>Naturalidade Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeGrauInstrucao</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.NomeGrauInstrucao"                data-endpoint="POSTapi-dynamic-report"
+               value="Grau de Instrução Teste"
+               data-component="body">
+    <br>
+<p>The NomeGrauInstrucao of the dadosPaciente. Example: <code>Grau de Instrução Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Profissao</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Profissao"                data-endpoint="POSTapi-dynamic-report"
+               value="Profissão Teste"
+               data-component="body">
+    <br>
+<p>The Profissao of the dadosPaciente. Example: <code>Profissão Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>NomeOrigem</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.NomeOrigem"                data-endpoint="POSTapi-dynamic-report"
+               value="Origem Teste"
+               data-component="body">
+    <br>
+<p>The NomeOrigem of the dadosPaciente. Example: <code>Origem Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>convenio1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.convenio1"                data-endpoint="POSTapi-dynamic-report"
+               value="Convênio Teste"
+               data-component="body">
+    <br>
+<p>The convenio1 of the dadosPaciente. Example: <code>Convênio Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>plano1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.plano1"                data-endpoint="POSTapi-dynamic-report"
+               value="Plano Teste"
+               data-component="body">
+    <br>
+<p>The plano1 of the dadosPaciente. Example: <code>Plano Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Matricula1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Matricula1"                data-endpoint="POSTapi-dynamic-report"
+               value="Matrícula Teste"
+               data-component="body">
+    <br>
+<p>The Matricula1 of the dadosPaciente. Example: <code>Matrícula Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Validade1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Validade1"                data-endpoint="POSTapi-dynamic-report"
+               value="2021-09-28 14:09:00"
+               data-component="body">
+    <br>
+<p>The Validade1 of the dadosPaciente. Example: <code>2021-09-28 14:09:00</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>Titular1</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="dadosPaciente.Titular1"                data-endpoint="POSTapi-dynamic-report"
+               value="Titular Teste"
+               data-component="body">
+    <br>
+<p>The Titular1 of the dadosPaciente. Example: <code>Titular Teste</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>timeline</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+ &nbsp;
+<br>
+<p>The timeline of the report.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="timeline.title"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The title of the timeline. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>nome_profissional</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="timeline.nome_profissional"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The nome_profissional of the timeline. Example: <code>Teste</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>date_time</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="timeline.date_time"                data-endpoint="POSTapi-dynamic-report"
+               value="2021-09-28 14:09:00"
+               data-component="body">
+    <br>
+<p>The date_time of the timeline. Example: <code>2021-09-28 14:09:00</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>content</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="timeline.content"                data-endpoint="POSTapi-dynamic-report"
+               value="Teste"
+               data-component="body">
+    <br>
+<p>The content of the timeline. Example: <code>Teste</code></p>
+                    </div>
+                                    </details>
         </div>
         </form>
 

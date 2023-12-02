@@ -73,80 +73,13 @@ paths:
               required:
                 - html
       security: []
-  /api/advanced:
+  /api/dynamic-report:
     post:
-      summary: 'Advanced PDF generation'
-      operationId: advancedPDFGeneration
-      description: 'Generate PDFs from HTML with header and footer repeating them in every page'
+      summary: 'Dynamic PDF generation'
+      operationId: dynamicPDFGeneration
+      description: 'Generate PDFs from HTML'
       parameters: []
-      responses:
-        200:
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "{\n\"Content-Type\": \"application/pdf\",\n\"Content-Disposition\": \"inline; filename=\"2021-09-28 14:09:00.pdf\"\",\n\"Cache-Control\": \"no-cache, no-store, max-age=0, must-revalidate\"\n}"
-        422:
-          description: 'Validation error'
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'The given data was invalid.'
-                  errors:
-                    settings:
-                      - 'O campo settings é obrigatório.'
-                    header:
-                      - 'O campo header é obrigatório.'
-                    body:
-                      - 'O campo body é obrigatório.'
-                    footer:
-                      - 'O campo footer é obrigatório.'
-                properties:
-                  message:
-                    type: string
-                    example: 'The given data was invalid.'
-                  errors:
-                    type: object
-                    properties:
-                      settings:
-                        type: array
-                        example:
-                          - 'O campo settings é obrigatório.'
-                        items:
-                          type: string
-                      header:
-                        type: array
-                        example:
-                          - 'O campo header é obrigatório.'
-                        items:
-                          type: string
-                      body:
-                        type: array
-                        example:
-                          - 'O campo body é obrigatório.'
-                        items:
-                          type: string
-                      footer:
-                        type: array
-                        example:
-                          - 'O campo footer é obrigatório.'
-                        items:
-                          type: string
-        500:
-          description: 'Internal server error'
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'Internal server error'
-                properties:
-                  message:
-                    type: string
-                    example: 'Internal server error'
+      responses: {  }
       tags:
         - 'PDF generation'
       requestBody:
@@ -156,48 +89,404 @@ paths:
             schema:
               type: object
               properties:
-                settings:
+                report:
+                  type: string
+                  description: 'The report (name of the view used within feegow-api) to be generated.'
+                  example: 'patientinterface::render-medical-report'
+                letterhead:
                   type: object
-                  description: 'The settings for the PDF generation.'
+                  description: 'The letterhead configs.'
                   example:
+                    mTop: 20
+                    mBottom: 20
+                    mLeft: 20
+                    mRight: 20
+                    headerHeight: 50
+                    footerHeight: 50
                     useHeader: true
                     useFooter: true
                     paperSize: A4
                     orientation: portrait
+                    customWidth: 210
+                    customHeight: 297
                   properties:
+                    mTop:
+                      type: integer
+                      description: 'The top margin of the letterhead.'
+                      example: 20
+                    mBottom:
+                      type: integer
+                      description: 'The bottom margin of the letterhead.'
+                      example: 20
+                    mLeft:
+                      type: integer
+                      description: 'The left margin of the letterhead.'
+                      example: 20
+                    mRight:
+                      type: integer
+                      description: 'The right margin of the letterhead.'
+                      example: 20
+                    headerHeight:
+                      type: integer
+                      description: 'The header height of the letterhead.'
+                      example: 50
+                    footerHeight:
+                      type: integer
+                      description: 'The footer height of the letterhead.'
+                      example: 50
                     useHeader:
                       type: boolean
-                      description: 'Whether to use header or not.'
+                      description: 'The use header of the letterhead.'
                       example: true
                     useFooter:
                       type: boolean
-                      description: 'Whether to use footer or not.'
+                      description: 'The use footer of the letterhead.'
                       example: true
                     paperSize:
                       type: string
-                      description: 'The paper size.'
+                      description: 'The paper size of the letterhead.'
                       example: A4
                     orientation:
                       type: string
-                      description: 'The orientation.'
+                      description: 'The orientation of the letterhead.'
                       example: portrait
-                header:
-                  type: string
-                  description: 'The HTML for the header.'
-                  example: '<html><body><h1>Header</h1></body></html>'
+                    customWidth:
+                      type: integer
+                      description: 'The custom width of the letterhead.'
+                      example: 210
+                    customHeight:
+                      type: integer
+                      description: 'The custom height of the letterhead.'
+                      example: 297
                 body:
                   type: string
-                  description: 'The HTML for the body.'
-                  example: '<html><body><h1>Body</h1></body></html>'
-                footer:
+                  description: 'The body of the report.'
+                  example: '<html><body><h1>Teste</h1></body></html>'
+                default:
                   type: string
-                  description: 'The HTML for the footer.'
-                  example: '<html><body><h1>Footer</h1></body></html>'
+                  description: 'The default configs of the report.'
+                  example: '<html><body><div>Teste de conteúdo default</div></body></html>'
+                pedidos:
+                  type: array
+                  description: 'The pedidos of the report.'
+                  example:
+                    -
+                      NomeProcedimento: 'Procedimento 1'
+                      Observacoes: 'Observação 1'
+                    -
+                      NomeProcedimento: 'Procedimento 2'
+                      Observacoes: 'Observação 2'
+                  items:
+                    type: object
+                    properties:
+                      NomeProcedimento:
+                        type: string
+                        description: 'The NomeProcedimento of the pedido.'
+                        example: 'Procedimento 1'
+                      Observacoes:
+                        type: string
+                        description: 'The Observacoes of the pedido.'
+                        example: 'Observação 1'
+                    required:
+                      - NomeProcedimento
+                      - Observacoes
+                configOpcoes:
+                  type: object
+                  description: 'The configOpcoes of the report.'
+                  example:
+                    AssociarPorGrupos: 1
+                  properties:
+                    AssociarPorGrupos:
+                      type: integer
+                      description: 'The AssociarPorGrupos of the configOpcoes.'
+                      example: 1
+                specialControl:
+                  type: object
+                  description: 'The specialControl of the report.'
+                  example:
+                    termico: 1
+                    NomeProfissional: Teste
+                    DocumentoProfissional: Teste
+                    EnderecoClinica: Teste
+                    CidadeClinica: Teste
+                    EstadoClinica: Teste
+                    Tel1Clinica: Teste
+                    dataV: '2021-09-28 14:09:00'
+                  properties:
+                    termico:
+                      type: integer
+                      description: 'Tells whether the report is thermal or not.'
+                      example: 1
+                    NomeProfissional:
+                      type: string
+                      description: 'The NomeProfissional of the specialControl.'
+                      example: Teste
+                    DocumentoProfissional:
+                      type: string
+                      description: 'The DocumentoProfissional of the specialControl.'
+                      example: Teste
+                    EnderecoClinica:
+                      type: string
+                      description: 'The EnderecoClinica of the specialControl.'
+                      example: Teste
+                    CidadeClinica:
+                      type: string
+                      description: 'The CidadeClinica of the specialControl.'
+                      example: Teste
+                    EstadoClinica:
+                      type: string
+                      description: 'The EstadoClinica of the specialControl.'
+                      example: Teste
+                    Tel1Clinica:
+                      type: string
+                      description: 'The Tel1Clinica of the specialControl.'
+                      example: Teste
+                    dataV:
+                      type: string
+                      description: 'The dataV of the specialControl.'
+                      example: '2021-09-28 14:09:00'
+                protocols:
+                  type: array
+                  description: 'The protocols of the report.'
+                  example:
+                    -
+                      NomeProtocolo: 'Protocolo 1'
+                      NomeProfissional: 'Profissional 1'
+                      ciclo: 'Ciclo 1'
+                      Periodicidade: 'Periodicidade 1'
+                    -
+                      NomeProtocolo: 'Protocolo 2'
+                      NomeProfissional: 'Profissional 2'
+                      ciclo: 'Ciclo 2'
+                      Periodicidade: 'Periodicidade 2'
+                  items:
+                    type: object
+                    properties:
+                      NomeProtocolo:
+                        type: string
+                        description: 'The NomeProtocolo of the protocol.'
+                        example: 'Protocolo 1'
+                      NomeProfissional:
+                        type: string
+                        description: 'The NomeProfissional of the protocol.'
+                        example: 'Profissional 1'
+                      ciclo:
+                        type: string
+                        description: 'The ciclo of the protocol.'
+                        example: 'Ciclo 1'
+                    required:
+                      - NomeProtocolo
+                      - NomeProfissional
+                      - ciclo
+                dadosPaciente:
+                  type: object
+                  description: 'The dadosPaciente of the report.'
+                  example:
+                    NomePaciente: Teste
+                    NomeSexo: Masculino
+                    sysDate: '2021-09-28 14:09:00'
+                    id: 1
+                    Nascimento: '2021-09-28 14:09:00'
+                    Altura: 1.8
+                    Peso: 80
+                    IMC: 24.69
+                    Endereco: 'Rua Teste'
+                    Bairro: 'Bairro Teste'
+                    Cidade: 'Cidade Teste'
+                    Estado: 'Estado Teste'
+                    NomePais: 'País Teste'
+                    Cep: 00000-000
+                    Tel1: 0000-0000
+                    Tel2: 0000-0000
+                    Cel1: 00000-0000
+                    Cel2: 00000-0000
+                    Email1: exemple@mail.com
+                    Email2: example2@mail.com
+                    Documento: '00000000000'
+                    CPF: 000.000.000-00
+                    NomeEstadoCivil: 'Estado Civil Teste'
+                    Naturalidade: 'Naturalidade Teste'
+                    NomeGrauInstrucao: 'Grau de Instrução Teste'
+                    Profissao: 'Profissão Teste'
+                    NomeOrigem: 'Origem Teste'
+                    convenio1: 'Convênio Teste'
+                    plano1: 'Plano Teste'
+                    Matricula1: 'Matrícula Teste'
+                    Validade1: '2021-09-28 14:09:00'
+                    Titular1: 'Titular Teste'
+                  properties:
+                    NomePaciente:
+                      type: string
+                      description: 'The NomePaciente of the dadosPaciente.'
+                      example: Teste
+                    NomeSexo:
+                      type: string
+                      description: 'The NomeSexo of the dadosPaciente.'
+                      example: Masculino
+                    sysDate:
+                      type: string
+                      description: 'The sysDate of the dadosPaciente.'
+                      example: '2021-09-28 14:09:00'
+                    id:
+                      type: integer
+                      description: 'The id of the dadosPaciente.'
+                      example: 1
+                    Nascimento:
+                      type: string
+                      description: 'The Nascimento of the dadosPaciente.'
+                      example: '2021-09-28 14:09:00'
+                    Altura:
+                      type: number
+                      description: 'The Altura of the dadosPaciente.'
+                      example: 1.8
+                    Peso:
+                      type: number
+                      description: 'The Peso of the dadosPaciente.'
+                      example: 80.0
+                    IMC:
+                      type: number
+                      description: 'The IMC of the dadosPaciente.'
+                      example: 24.69
+                    Endereco:
+                      type: string
+                      description: 'The Endereco of the dadosPaciente.'
+                      example: 'Rua Teste'
+                    Bairro:
+                      type: string
+                      description: 'The Bairro of the dadosPaciente.'
+                      example: 'Bairro Teste'
+                    Cidade:
+                      type: string
+                      description: 'The Cidade of the dadosPaciente.'
+                      example: 'Cidade Teste'
+                    Estado:
+                      type: string
+                      description: 'The Estado of the dadosPaciente.'
+                      example: 'Estado Teste'
+                    NomePais:
+                      type: string
+                      description: 'The NomePais of the dadosPaciente.'
+                      example: 'País Teste'
+                    Cep:
+                      type: string
+                      description: 'The Cep of the dadosPaciente.'
+                      example: 00000-000
+                    Tel1:
+                      type: string
+                      description: 'The Tel1 of the dadosPaciente.'
+                      example: 0000-0000
+                    Tel2:
+                      type: string
+                      description: 'The Tel2 of the dadosPaciente.'
+                      example: 0000-0000
+                    Cel1:
+                      type: string
+                      description: 'The Cel1 of the dadosPaciente.'
+                      example: 00000-0000
+                    Cel2:
+                      type: string
+                      description: 'The Cel2 of the dadosPaciente.'
+                      example: 00000-0000
+                    Email1:
+                      type: string
+                      description: 'The Email1 of the dadosPaciente. Example:'
+                      example: deleniti
+                    Email2:
+                      type: string
+                      description: 'The Email2 of the dadosPaciente. Example:'
+                      example: voluptatem
+                    Documento:
+                      type: string
+                      description: 'The Documento of the dadosPaciente.'
+                      example: '00000000000'
+                    CPF:
+                      type: string
+                      description: 'The CPF of the dadosPaciente.'
+                      example: 000.000.000-00
+                    NomeEstadoCivil:
+                      type: string
+                      description: 'The NomeEstadoCivil of the dadosPaciente.'
+                      example: 'Estado Civil Teste'
+                    Naturalidade:
+                      type: string
+                      description: 'The Naturalidade of the dadosPaciente.'
+                      example: 'Naturalidade Teste'
+                    NomeGrauInstrucao:
+                      type: string
+                      description: 'The NomeGrauInstrucao of the dadosPaciente.'
+                      example: 'Grau de Instrução Teste'
+                    Profissao:
+                      type: string
+                      description: 'The Profissao of the dadosPaciente.'
+                      example: 'Profissão Teste'
+                    NomeOrigem:
+                      type: string
+                      description: 'The NomeOrigem of the dadosPaciente.'
+                      example: 'Origem Teste'
+                    convenio1:
+                      type: string
+                      description: 'The convenio1 of the dadosPaciente.'
+                      example: 'Convênio Teste'
+                    plano1:
+                      type: string
+                      description: 'The plano1 of the dadosPaciente.'
+                      example: 'Plano Teste'
+                    Matricula1:
+                      type: string
+                      description: 'The Matricula1 of the dadosPaciente.'
+                      example: 'Matrícula Teste'
+                    Validade1:
+                      type: string
+                      description: 'The Validade1 of the dadosPaciente.'
+                      example: '2021-09-28 14:09:00'
+                    Titular1:
+                      type: string
+                      description: 'The Titular1 of the dadosPaciente.'
+                      example: 'Titular Teste'
+                timeline:
+                  type: array
+                  description: 'The timeline of the report.'
+                  example:
+                    -
+                      title: Teste
+                      nome_profissional: Teste
+                      date_time: '2021-09-28 14:09:00'
+                      content: Teste
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                        description: 'The title of the timeline.'
+                        example: Teste
+                      nome_profissional:
+                        type: string
+                        description: 'The nome_profissional of the timeline.'
+                        example: Teste
+                      date_time:
+                        type: string
+                        description: 'The date_time of the timeline.'
+                        example: '2021-09-28 14:09:00'
+                      content:
+                        type: string
+                        description: 'The content of the timeline.'
+                        example: Teste
+                    required:
+                      - title
+                      - nome_profissional
+                      - date_time
+                      - content
               required:
-                - settings
-                - header
+                - report
+                - letterhead
                 - body
-                - footer
+                - default
+                - pedidos
+                - configOpcoes
+                - specialControl
+                - protocols
+                - dadosPaciente
+                - timeline
       security: []
 tags:
   -

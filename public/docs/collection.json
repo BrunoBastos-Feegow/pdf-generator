@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Feegow PDF Generator API",
-        "_postman_id": "73cd032f-8cea-4d12-be7e-fbdca60e82ec",
+        "_postman_id": "54d5a194-90a4-4c0c-841c-b20f34a59225",
         "description": "API for generating PDFs from HTML",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -70,13 +70,13 @@
                     ]
                 },
                 {
-                    "name": "Advanced PDF generation",
+                    "name": "Dynamic PDF generation",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/advanced",
+                            "path": "api\/dynamic-report",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/advanced"
+                            "raw": "{{baseUrl}}\/api\/dynamic-report"
                         },
                         "method": "POST",
                         "header": [
@@ -91,33 +91,14 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"settings\":{\"useHeader\":true,\"useFooter\":true,\"paperSize\":\"A4\",\"orientation\":\"portrait\"},\"header\":\"<html><body><h1>Header<\\\/h1><\\\/body><\\\/html>\",\"body\":\"<html><body><h1>Body<\\\/h1><\\\/body><\\\/html>\",\"footer\":\"<html><body><h1>Footer<\\\/h1><\\\/body><\\\/html>\"}"
+                            "raw": "{\"report\":\"patientinterface::render-medical-report\",\"letterhead\":{\"mTop\":20,\"mBottom\":20,\"mLeft\":20,\"mRight\":20,\"headerHeight\":50,\"footerHeight\":50,\"useHeader\":true,\"useFooter\":true,\"paperSize\":\"A4\",\"orientation\":\"portrait\",\"customWidth\":210,\"customHeight\":297},\"body\":\"<html><body><h1>Teste<\\\/h1><\\\/body><\\\/html>\",\"default\":\"<html><body><div>Teste de conte\u00fado default<\\\/div><\\\/body><\\\/html>\",\"pedidos\":[{\"NomeProcedimento\":\"Procedimento 1\",\"Observacoes\":\"Observa\u00e7\u00e3o 1\"},{\"NomeProcedimento\":\"Procedimento 2\",\"Observacoes\":\"Observa\u00e7\u00e3o 2\"}],\"configOpcoes\":{\"AssociarPorGrupos\":1},\"specialControl\":{\"termico\":1,\"NomeProfissional\":\"Teste\",\"DocumentoProfissional\":\"Teste\",\"EnderecoClinica\":\"Teste\",\"CidadeClinica\":\"Teste\",\"EstadoClinica\":\"Teste\",\"Tel1Clinica\":\"Teste\",\"dataV\":\"2021-09-28 14:09:00\"},\"protocols\":[{\"NomeProtocolo\":\"Protocolo 1\",\"NomeProfissional\":\"Profissional 1\",\"ciclo\":\"Ciclo 1\",\"Periodicidade\":\"Periodicidade 1\"},{\"NomeProtocolo\":\"Protocolo 2\",\"NomeProfissional\":\"Profissional 2\",\"ciclo\":\"Ciclo 2\",\"Periodicidade\":\"Periodicidade 2\"}],\"dadosPaciente\":{\"NomePaciente\":\"Teste\",\"NomeSexo\":\"Masculino\",\"sysDate\":\"2021-09-28 14:09:00\",\"id\":1,\"Nascimento\":\"2021-09-28 14:09:00\",\"Altura\":1.8,\"Peso\":80,\"IMC\":24.69,\"Endereco\":\"Rua Teste\",\"Bairro\":\"Bairro Teste\",\"Cidade\":\"Cidade Teste\",\"Estado\":\"Estado Teste\",\"NomePais\":\"Pa\u00eds Teste\",\"Cep\":\"00000-000\",\"Tel1\":\"0000-0000\",\"Tel2\":\"0000-0000\",\"Cel1\":\"00000-0000\",\"Cel2\":\"00000-0000\",\"Email1\":\"exemple@mail.com\",\"Email2\":\"example2@mail.com\",\"Documento\":\"00000000000\",\"CPF\":\"000.000.000-00\",\"NomeEstadoCivil\":\"Estado Civil Teste\",\"Naturalidade\":\"Naturalidade Teste\",\"NomeGrauInstrucao\":\"Grau de Instru\u00e7\u00e3o Teste\",\"Profissao\":\"Profiss\u00e3o Teste\",\"NomeOrigem\":\"Origem Teste\",\"convenio1\":\"Conv\u00eanio Teste\",\"plano1\":\"Plano Teste\",\"Matricula1\":\"Matr\u00edcula Teste\",\"Validade1\":\"2021-09-28 14:09:00\",\"Titular1\":\"Titular Teste\"},\"timeline\":[{\"title\":\"Teste\",\"nome_profissional\":\"Teste\",\"date_time\":\"2021-09-28 14:09:00\",\"content\":\"Teste\"}]}"
                         },
-                        "description": "Generate PDFs from HTML with header and footer repeating them in every page",
+                        "description": "Generate PDFs from HTML",
                         "auth": {
                             "type": "noauth"
                         }
                     },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 200,
-                            "body": "{\n\"Content-Type\": \"application\/pdf\",\n\"Content-Disposition\": \"inline; filename=\"2021-09-28 14:09:00.pdf\"\",\n\"Cache-Control\": \"no-cache, no-store, max-age=0, must-revalidate\"\n}",
-                            "name": "Success"
-                        },
-                        {
-                            "header": [],
-                            "code": 422,
-                            "body": "{\n     \"message\": \"The given data was invalid.\",\n     \"errors\": {\n         \"settings\": [\n             \"O campo settings \u00e9 obrigat\u00f3rio.\"\n         ],\n         \"header\": [\n             \"O campo header \u00e9 obrigat\u00f3rio.\"\n         ],\n         \"body\": [\n             \"O campo body \u00e9 obrigat\u00f3rio.\"\n         ],\n         \"footer\": [\n             \"O campo footer \u00e9 obrigat\u00f3rio.\"\n         ]\n    }\n}",
-                            "name": "Validation error"
-                        },
-                        {
-                            "header": [],
-                            "code": 500,
-                            "body": "{\n    \"message\": \"Internal server error\"\n}",
-                            "name": "Internal server error"
-                        }
-                    ]
+                    "response": []
                 }
             ]
         }
