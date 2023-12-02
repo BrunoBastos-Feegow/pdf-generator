@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\HtmlService;
 use App\Services\SnappyService;
 use Illuminate\Http\Request;
+
 /**
  * Class SnappyController
  * @package App\Http\Controllers
@@ -90,7 +91,6 @@ class SnappyController extends Controller
      * @bodyParam pedidos object[] required The pedidos of the report. Example: [{"NomeProcedimento": "Procedimento 1", "Observacoes": "Observação 1"}, {"NomeProcedimento": "Procedimento 2", "Observacoes": "Observação 2"}]
      * @bodyParam pedidos.NomeProcedimento string required The NomeProcedimento of the pedido. Example: Procedimento 1
      * @bodyParam pedidos.Observacoes string required The Observacoes of the pedido. Example: Observação 1
-
      * @bodyParam configOpcoes object required The configOpcoes of the report. Example: {"AssociarPorGrupos": 1}
      * @bodyParam configOpcoes.AssociarPorGrupos integer required The AssociarPorGrupos of the configOpcoes. Example: 1
      *
@@ -188,8 +188,6 @@ class SnappyController extends Controller
                 //$body = view('default.body', compact('letterhead', 'body', 'default', 'specialControl'))->render();
                 break;
         }
-
-
         $pdf = $this->snappyService->getReportPdf($request);
 
         return response($pdf, 200, [
@@ -197,15 +195,12 @@ class SnappyController extends Controller
             'Content-Disposition' => 'inline; filename="' . now() . '.pdf"',
             'Cache-Control'       => 'no-cache, no-store, max-age=0, must-revalidate',
         ]);
-
-
     }
 
 
     public function testFixedContent()
     {
-        //define a conversion rate from mm to pixels
-//        define('PIXELS_PER_MM', (96 / 25.4));
+        define('PIXELS_PER_MM', (96 / 25.4));
         $configs      = session()->get('configs');
         $topMargin    = ($configs['topMargin'] ?? 20) / PIXELS_PER_MM;
         $bottomMargin = ($configs['bottomMargin'] ?? 20) / PIXELS_PER_MM;
