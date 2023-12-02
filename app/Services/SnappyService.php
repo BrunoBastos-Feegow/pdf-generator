@@ -9,17 +9,14 @@ use Illuminate\Http\Request;
 
 class SnappyService
 {
-    /** @var PdfWrapper */
-    private mixed $snappy;
-
-    private HtmlService $htmlService;
+    private $pixelsPerMm = (96 / 25.4);
 
     /** @throws BindingResolutionException */
-    public function __construct()
+    public function __construct(
+        public PdfWrapper   $snappy,
+        public HtmlService $htmlService
+    )
     {
-        define('PIXELS_PER_MM', (96 / 25.4));
-        $this->htmlService = app()->make(HtmlService::class);
-        $this->snappy      = app()->make('snappy.pdf');
         $this->snappy->setOptions([
             'encoding'                 => 'UTF-8',
             'enable-local-file-access' => true,
@@ -36,23 +33,28 @@ class SnappyService
         ]);
     }
 
+    public function getPixesPerMm(): float
+    {
+        return $this->pixelsPerMm;
+    }
+
     public function setConfigsFromLetterhead(array $letterhead): SnappyService
     {
         if(empty($letterhead))
             return $this;
 
         $letterhead   = collect($letterhead);
-        $topMargin    = $letterhead->get('mTop') ? ($letterhead->get('mTop') / PIXELS_PER_MM) : 0;
-        $bottomMargin = $letterhead->get('mBottom') ? ($letterhead->get('mBottom') / PIXELS_PER_MM) : 0;
-        $leftMargin   = $letterhead->get('mLeft') ? ($letterhead->get('mLeft') / PIXELS_PER_MM) : 0;
-        $rightMargin  = $letterhead->get('mRight') ? ($letterhead->get('mRight') / PIXELS_PER_MM) : 0;
+        $topMargin    = $letterhead->get('mTop') ? ($letterhead->get('mTop') / $this->pixelsPerMm) : 0;
+        $bottomMargin = $letterhead->get('mBottom') ? ($letterhead->get('mBottom') / $this->pixelsPerMm) : 0;
+        $leftMargin   = $letterhead->get('mLeft') ? ($letterhead->get('mLeft') / $this->pixelsPerMm) : 0;
+        $rightMargin  = $letterhead->get('mRight') ? ($letterhead->get('mRight') / $this->pixelsPerMm) : 0;
 
         /**
          * @TODO: implement missing configs within the letterhead configs
          * headerHeight, footerHeight, useHeader, useFooter, paperSize, orientation, customWidth, customHeight
          */
-        $headerHeight = $letterhead->get('headerHeight') ? ($letterhead->get('headerHeight') / PIXELS_PER_MM) : 45;
-        $footerHeight = $letterhead->get('footerHeight') ? ($letterhead->get('footerHeight') / PIXELS_PER_MM) : 90;
+        $headerHeight = $letterhead->get('headerHeight') ? ($letterhead->get('headerHeight') / $this->pixelsPerMm) : 45;
+        $footerHeight = $letterhead->get('footerHeight') ? ($letterhead->get('footerHeight') / $this->pixelsPerMm) : 90;
 
         $useHeader = $letterhead->get('useHeader') ?? false;
         $useFooter = $letterhead->get('useFooter') ?? false;
@@ -88,11 +90,11 @@ class SnappyService
         return $this->snappy->getOutputFromHtml($html);
     }
 
+    /** @throws SnappyServiceException */
     public function getReportPdf(Request $request)
     {
         try {
             $this->setConfigsFromLetterhead($request->letterhead);
-
             $viewName = $this->getViewName($request->report);
             $header   = view("{$viewName}-header", $request->all())->render();
             $body     = view("{$viewName}-body", $request->all())->render();
@@ -112,14 +114,18 @@ class SnappyService
 
             $this->snappy->setOption('header-html', $header);
             $this->snappy->setOption('footer-html', $footer);
-            return $this->snappy->getOutputFromHtml($body);
+            return $this->getOutputFromHtml($body);
         } catch(\Exception $e) {
             throw new SnappyServiceException($e->getMessage());
         }
     }
 
+    protected function getOutputFromHtml($html)
+    {
+        return $this->snappy->getOutputFromHtml($html);
+    }
 
-    private function getViewName(string $reportName): string
+    protected function getViewName(string $reportName): string
     {
         return match ($reportName) {
             'patientinterface::render-medical-report' => 'snappy.report',
