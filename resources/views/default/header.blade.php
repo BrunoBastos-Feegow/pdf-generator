@@ -1,16 +1,33 @@
 @php
-    $topMargin = ($configs['topMargin'] ?? 5);
-    $bottomMargin = ($configs['bottomMargin'] ?? 5);
-    $leftMargin = ($configs['leftMargin'] ?? 5);
-    $rightMargin = ($configs['rightMargin'] ?? 5);
-    $headerHeight = ($configs['headerHeight'] ?? 0);
-    $footerHeight = ($configs['footerHeight'] ?? 0);
-    $useHeader = $configs['useHeader'] ?? false;
-    $useFooter = $configs['useFooter'] ?? false;
-    $paperSize = $configs['paperSize'] ?? 'A4';
-    $orientation = $configs['orientation'] ?? 'portrait';
-    $customWidth = ($configs['customWidth'] ?? 210);
-    $customHeight = ($configs['customHeight'] ?? 297);
+//    $topMargin = ($configs['topMargin'] ?? 5);
+//    $bottomMargin = ($configs['bottomMargin'] ?? 5);
+//    $leftMargin = ($configs['leftMargin'] ?? 5);
+//    $rightMargin = ($configs['rightMargin'] ?? 5);
+//    $headerHeight = ($configs['headerHeight'] ?? 0);
+//    $footerHeight = ($configs['footerHeight'] ?? 0);
+//    $useHeader = $configs['useHeader'] ?? false;
+//    $useFooter = $configs['useFooter'] ?? false;
+//    $paperSize = $configs['paperSize'] ?? 'A4';
+//    $orientation = $configs['orientation'] ?? 'portrait';
+//    $customWidth = ($configs['customWidth'] ?? 210);
+//    $customHeight = ($configs['customHeight'] ?? 297);
+
+    if(isset($letterhead["mTop"])){
+        $mLeft = $letterhead["mLeft"] ?? 0;
+        $mLeft = $mLeft == "0" ? 0 : $mLeft . "px";
+        $mRight = $letterhead["mRight"] ?? 0;
+        $mRight = $mRight == "0" ? 0 : $mRight . "px";
+        $mTop = $letterhead["mTop"] ?? 0;
+        $mTop = $mTop == "0" ? 0 : $mTop . "px";
+        $mBottom = $letterhead["mBottom"] ?? 0;
+        $mBottom = $mBottom == "0" ? 0 : $mBottom . "px";
+    } else {
+        $mLeft = "20px";
+        $mRight = "20px";
+        $mTop = "20px";
+        $mBottom = "20px";
+    }
+
 @endphp
 
     <!DOCTYPE html>
@@ -40,7 +57,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/bootstrap4@5.2.0/dist/PNotifyBootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pnotify/font-awesome5@5.2.0/dist/PNotifyFontAwesome5.min.js"></script>
-    <link rel="stylesheet" href="{{config('app.feeegow_api_url')}}modules/patientinterface/css/medical-report-2.css">
+{{--    <link rel="stylesheet" href="{{config('app.feeegow_api_url')}}modules/patientinterface/css/medical-report-2.css">--}}
     <style> .hidden {
             display: none;
         }
@@ -67,9 +84,11 @@
         }
     </script>
 </head>
-<body style="margin: {{ $topMargin }}px {{ $rightMargin }}px {{ $bottomMargin }}px {{ $leftMargin }}px;"
+{{--<body style="margin: {{ $topMargin }}px {{ $rightMargin }}px {{ $bottomMargin }}px {{ $leftMargin }}px;"--}}
+<body style="margin: {{ $mTop }} {{ $mRight }} {{ $mBottom }} {{ $mLeft }};"
       onload="subst()">
-<div style="height: {{$headerHeight}}px !important; width: 100% !important; overflow: hidden;">
+{{--<div style="height: {{$headerHeight}}px !important; width: 100% !important; overflow: hidden;">--}}
+<div style="height: 200px !important; width: 100% !important; overflow: hidden;">
     {!! $letterhead["Cabecalho"] ?? '' !!}
     {!! $letterhead["FormCabecalho"] ?? '' !!}
 </div>
