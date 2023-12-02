@@ -2,86 +2,132 @@
 
 namespace App\Services;
 
-use App\Models\Letterhead;
+use App\Exceptions\SnappyServiceException;
+use Barryvdh\Snappy\PdfWrapper;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 
 class SnappyService
 {
+    /** @var PdfWrapper */
     private mixed $snappy;
+
     private HtmlService $htmlService;
-    private bool $useHeader = false;
-    private bool $useFooter = false;
 
     /** @throws BindingResolutionException */
     public function __construct()
     {
         define('PIXELS_PER_MM', (96 / 25.4));
         $this->htmlService = app()->make(HtmlService::class);
-        $this->snappy = app()->make('snappy.pdf');
-        $this->snappy->setOption('encoding', 'UTF-8');
-        $this->setDefaultConfig();
+        $this->snappy      = app()->make('snappy.pdf');
+        $this->snappy->setOptions([
+            'encoding'                 => 'UTF-8',
+            'enable-local-file-access' => true,
+            'images'                   => true,
+            'enable-javascript'        => true,
+            'javascript-delay'         => 1000,
+            'no-stop-slow-scripts'     => true,
+            'enable-smart-shrinking'   => true,
+            'no-background'            => false,
+            'lowquality'               => false,
+            'dpi'                      => 300,
+            'header-spacing'           => 3,
+            'footer-spacing'           => 3,
+        ]);
+    }
+
+    public function setConfigsFromLetterhead(array $letterhead): SnappyService
+    {
+        if(empty($letterhead))
+            return $this;
+
+        $letterhead   = collect($letterhead);
+        $topMargin    = $letterhead->get('mTop') ? ($letterhead->get('mTop') / PIXELS_PER_MM) : 0;
+        $bottomMargin = $letterhead->get('mBottom') ? ($letterhead->get('mBottom') / PIXELS_PER_MM) : 0;
+        $leftMargin   = $letterhead->get('mLeft') ? ($letterhead->get('mLeft') / PIXELS_PER_MM) : 0;
+        $rightMargin  = $letterhead->get('mRight') ? ($letterhead->get('mRight') / PIXELS_PER_MM) : 0;
+
+        /**
+         * @TODO: implement missing configs within the letterhead configs
+         * headerHeight, footerHeight, useHeader, useFooter, paperSize, orientation, customWidth, customHeight
+         */
+        $headerHeight = $letterhead->get('headerHeight') ? ($letterhead->get('headerHeight') / PIXELS_PER_MM) : 45;
+        $footerHeight = $letterhead->get('footerHeight') ? ($letterhead->get('footerHeight') / PIXELS_PER_MM) : 90;
+
+        $useHeader = $letterhead->get('useHeader') ?? false;
+        $useFooter = $letterhead->get('useFooter') ?? false;
+
+        $paperSize    = $letterhead->get('paperSize') ?? 'A4';
+        $orientation  = $letterhead->get('orientation') ?? 'portrait';
+        $customWidth  = $letterhead->get('customWidth') ?? 210;
+        $customHeight = $letterhead->get('customHeight') ?? 297;
+
+        $this->useHeader = $useHeader;
+        $this->useFooter = $useFooter;
+
+        $this->snappy->setOption('margin-top', $topMargin + $headerHeight);
+        $this->snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
+        $this->snappy->setOption('margin-left', $leftMargin);
+        $this->snappy->setOption('margin-right', $rightMargin);
+        if($paperSize == 'custom') {
+            $this->snappy->setOption('page-width', $customWidth);
+            $this->snappy->setOption('page-height', $customHeight);
+        } else {
+            $this->snappy->setOption('page-size', $paperSize);
+        }
+        $this->snappy->setOption('orientation', $orientation);
+        return $this;
     }
 
     public function basicHtmlToPdf($html)
     {
-        $html = $this->htmlService->cleanUp($html);
+        $this->snappy->setOption('margin-top', 0);
+        $this->snappy->setOption('margin-bottom', 0);
+        $this->snappy->setOption('margin-left', 0);
+        $this->snappy->setOption('margin-right', 0);
         return $this->snappy->getOutputFromHtml($html);
     }
 
-    public function advancedHtmlToPdf(array $letterhead, string $body, string $default, array $specialControl, bool $isSpecialControl)
+    public function getReportPdf(Request $request)
     {
-        if($this->useHeader) {
-            $header = view($isSpecialControl ? 'specialcontrol.header' : 'default.header', compact('letterhead'))
-                ->render();
+        try {
+            $this->setConfigsFromLetterhead($request->letterhead);
+
+            $viewName = $this->getViewName($request->report);
+            $header   = view("{$viewName}-header", $request->all())->render();
+            $body     = view("{$viewName}-body", $request->all())->render();
+            $footer   = view("{$viewName}-footer", $request->all())->render();
+
+            $header = $this->htmlService->setHtml($header)
+                ->cleanUp()
+                ->getHtml();
+
+            $body = $this->htmlService->setHtml($body)
+                ->cleanUp()
+                ->getHtml();
+
+            $footer = $this->htmlService->setHtml($footer)
+                ->cleanUp()
+                ->getHtml();
+
             $this->snappy->setOption('header-html', $header);
-        }
-
-        if($this->useFooter) {
-            $footer = view($isSpecialControl ? 'specialcontrol.footer' : 'default.footer', compact('letterhead'))
-                ->render();
             $this->snappy->setOption('footer-html', $footer);
+            return $this->snappy->getOutputFromHtml($body);
+        } catch(\Exception $e) {
+            throw new SnappyServiceException($e->getMessage());
         }
-
-        $content = view($isSpecialControl ? 'specialcontrol.body' : 'default.body', compact('letterhead', 'body', 'default', 'specialControl'))
-            ->render();
-
-        return $this->snappy->getOutputFromHtml($content);
     }
 
-    public function setDefaultConfig()
-    {
-        $this->snappy->setOption('dpi', 300);
-        $this->snappy->setOption('header-spacing', 3);
-        $this->snappy->setOption('footer-spacing', 3);
 
-//        $letterhead   = null;//Letterhead::where('sysActive', 1)->first();
-//        $topMargin    = isset($letterhead) && $letterhead->mTop ? ($letterhead->mTop / PIXELS_PER_MM) : 0;
-//        $bottomMargin = isset($letterhead) && $letterhead->mBottom ? ($letterhead->mBottom / PIXELS_PER_MM) : 0;
-//        $leftMargin   = isset($letterhead) && $letterhead->mLeft ? ($letterhead->mLeft / PIXELS_PER_MM) : 0;
-//        $rightMargin  = isset($letterhead) && $letterhead->mRight ? ($letterhead->mRight / PIXELS_PER_MM) : 0;
-//        $headerHeight = isset($letterhead) && $letterhead->headerHeight ? ($letterhead->headerHeight / PIXELS_PER_MM) : 0;
-//        $footerHeight = isset($letterhead) && $letterhead->footerHeight ? ($letterhead->footerHeight / PIXELS_PER_MM) : 0;
-//        $useHeader    = isset($letterhead) && $letterhead->useHeader ?? false;
-//        $useFooter    = isset($letterhead) && $letterhead->useFooter ?? false;
-//        $paperSize    = isset($letterhead) && $letterhead->paperSize ?? 'A4';
-//        $orientation  = isset($letterhead) && $letterhead->orientation ?? 'portrait';
-//        $customWidth  = isset($letterhead) && $letterhead->customWidth ? ($letterhead->customWidth / PIXELS_PER_MM) : 210;
-//        $customHeight = isset($letterhead) && $letterhead->customHeight ? ($letterhead->customHeight / PIXELS_PER_MM) : 297;
-//
-//        $this->useHeader = $useHeader;
-//        $this->useFooter = $useFooter;
-//        $this->snappy->setOption('margin-top', $topMargin + $headerHeight);
-//        $this->snappy->setOption('margin-bottom', $bottomMargin + $footerHeight);
-//        $this->snappy->setOption('margin-left', $leftMargin);
-//        $this->snappy->setOption('margin-right', $rightMargin);
-//        if($paperSize == 'custom') {
-//            $this->snappy->setOption('page-width', $customWidth);
-//            $this->snappy->setOption('page-height', $customHeight);
-//        } else {
-//            $this->snappy->setOption('page-size', $paperSize);
-//        }
-//        $this->snappy->setOption('orientation', $orientation);
-        return $this;
+    private function getViewName(string $reportName): string
+    {
+        return match ($reportName) {
+            'patientinterface::render-medical-report' => 'snappy.report',
+            'patientinterface::render-medical-report-controle-especial' => 'snappy.especial',
+            'patientinterface::render-medical-report-protocol' => 'snappy.protocolo',
+            'patientinterface::render-atendimento-report' => 'snappy.atendimento',
+            default => '',
+        };
     }
 
 }
